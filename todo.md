@@ -1,0 +1,21 @@
+- user
+    - signup
+    - signin
+    - verification
+    - user
+- admin
+- blogpost
+- change-log
+- chat
+- comments
+- donnation
+- event
+- file server
+- follow
+- notification
+- pages
+- publication
+- publicator
+- reaction
+- story
+- story archived
