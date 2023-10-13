@@ -22,7 +22,7 @@ const combinedSwaggerDocument = {
     // ... ajoutez d'autres spécifications comme nécessaire
 }
 // Utiliser le module swagger-ui-express pour servir les spécifications Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedSwaggerDocument))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(combinedSwaggerDocument))
 
 app.use(morgan("dev"))
 app.use(compression())
