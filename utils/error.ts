@@ -4,15 +4,15 @@ const errorLogFile = 'errorLog.json'
 export class ErrorHandler extends Error {
     description: String
     code: number
-    constructor(message: string, code: number, error: Error) {
-        super(message)
+    constructor(description: string, code: number, error: Error) {
+        super(description)
         this.code = code
-        this.description = error.message
-        registerError(message, error)
+        this.description = description
+        registerError(description, error)
     }
 }
 
-export const registerError = (message: string, error: Error) => {
+const registerError = (message: string, error: Error) => {
     const currentTime = new Date()
     const gmtPlus3Offset = 3 * 60 * 60 * 1000
     const gmtPlus3Time = new Date(currentTime.getTime() + gmtPlus3Offset)
@@ -22,7 +22,6 @@ export const registerError = (message: string, error: Error) => {
         message,
         error: error.message,
         stack: error.stack,
-        name: error.name,
     }
     let errorLog: any[] = []
     if (fs.existsSync(errorLogFile)) errorLog = JSON.parse(fs.readFileSync(errorLogFile, 'utf-8'))

@@ -1,0 +1,212 @@
+{
+    "tags": [
+        {
+            "name": "authentication",
+            "description": "API d'authentification Teratany"
+        }
+    ],
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/user/authentication/verifyEmail": {
+            "post": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Permet de verifier qu'un utilisateur est bel et bien le propriétaire de l'email",
+                "description": "un email a été envoyé à l'utilisateur contenat le code de vérification. Pour permettre à l'utilisateur de confirmer que le mail est bel et bien le sien, il doit fournir le mail suivi du code qui lui a été envoyé",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "L'adresse email a verifier.",
+                                        "example": "example@mail.org"
+                                    },
+                                    "code": {
+                                        "type": "number",
+                                        "description": "Le code de confirmation.",
+                                        "example": 123456
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "True si le mail a été vérifié, False sinon"
+                    },
+                    "500": {
+                        "description": "Une erreur serveur s'est produite"
+                    }
+                }
+            }
+        },
+        "/user/authentication/signup": {
+            "post": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Création de compte Teratany",
+                "description": "le formulaire de création de compte, il retourne soit un token JWT",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "L'adresse email de l'utilisateur, un email ne peut être utilisé qu'une seule fois",
+                                        "example": "example@mail.org"
+                                    },
+                                    "displayName": {
+                                        "type": "string",
+                                        "description": "Minimum 2 caractères, maximum 32. Doit être unique",
+                                        "example": "Jon Doe 64"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Minimum 4 caractères. Un mot de passe complexe est recommandé pour plus de sécurité",
+                                        "example": "Pass1234"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "un token JWT"
+                    }
+                }
+            }
+        },
+        "/user/authentication/checkName": {
+            "get": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Verifier la disponnibilité du nom",
+                "description": "retourne true sy le nom est libre et false si le nom est utilisé par quelqu'un",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "displayName",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Le nom à verifier",
+                        "example": "Jon Doe 69"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "true sy le nom est libre et false si le nom est utilisé par quelqu'un"
+                    }
+                }
+            }
+        },
+        "/user/authentication/checkEmail": {
+            "get": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Verifier la disponnibilité de l'email",
+                "description": "retourne true sy le mail est libre et false sinon",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "email",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Le nom à verifier",
+                        "example": "example@mail.com"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "true sy le mail est libre et false sinon"
+                    }
+                }
+            }
+        },
+        "/user/authentication/sendEmail": {
+            "post": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Envoie un email de confirmation à l'adresse email utilisé à la création de compte",
+                "description": "Le mail contient un code de confirmation",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "L'adresse email de l'utilisateur",
+                                        "example": "example@mail.org"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "un token JWT"
+                    }
+                }
+            }
+        },
+        "/user/authentication/signin": {
+            "post": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Connexion à un compte Teratany",
+                "description": "le formulaire de connexion, il retourne soit un token JWT",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "L'adresse email de l'utilisateur",
+                                        "example": "example@mail.org"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Son mot de passe",
+                                        "example": "Pass1234"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "un token JWT"
+                    }
+                }
+            }
+        }
+    }
+}

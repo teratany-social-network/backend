@@ -1,8 +1,6 @@
 export type TEditProfile = {
     _id: string,
-    firstname: string,
-    lastname: string,
-    username: string,
+    displayName: string,
     email: string,
     address: {
         value: string,
@@ -11,5 +9,16 @@ export type TEditProfile = {
     walletId: {
         value: string,
         isPrivate: boolean
+    },
+    coordonates: {
+        latitude?: number,
+        longitude?: number
     }
+}
+
+export type TPrivateInfo = {
+    coordonates: boolean,
+    address: boolean,
+    country: boolean,
+    walletId: boolean,
 }

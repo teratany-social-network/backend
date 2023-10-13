@@ -1,7 +1,7 @@
 export class ResponseFormat implements TResponse {
-    code: string;
-    message: string;
-    data: any;
+    code: string
+    message: string
+    data: any
     constructor(code: string, message: string, data: any) {
         this.code = code
         this.message = message
@@ -9,7 +9,7 @@ export class ResponseFormat implements TResponse {
     }
 }
 export type TResponse = {
-    code: string;
-    message: string;
-    data: any;
+    code: string
+    message: string
+    data: any
 }

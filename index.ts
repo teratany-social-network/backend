@@ -6,9 +6,10 @@ import express from "express"
 import mongoose from "mongoose"
 import bodyParser from "body-parser"
 import compression from "compression"
-import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import swaggerAuthentication from './docs/swagger/authentication.json'
 import { AuthRouter } from "./routes/auth.routes"
+
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -16,30 +17,12 @@ const PORT = process.env.PORT || 8080
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/teratany"
 mongoose.set("strictQuery", false).connect(MONGO_URL).then(() => console.log("MongoDB connected to: " + MONGO_URL)).catch(() => "MongoDB connection Error")
 
-
-const options: swaggerJsdoc.Options = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: `Teratany's API`,
-            version: `1.0.0`,
-        },
-        servers: [
-            {
-                url: `http://localhost:${PORT}`,
-                description: 'Serveur local',
-            },
-            {
-                url: `https://api.teratany.org`,
-                description: 'Serveur en production',
-            },
-        ],
-    },
-    apis: ['./routes/*.ts'],
+const combinedSwaggerDocument = {
+    ...swaggerAuthentication,
+    // ... ajoutez d'autres spécifications comme nécessaire
 }
-const swaggerSpec = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-
+// Utiliser le module swagger-ui-express pour servir les spécifications Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedSwaggerDocument))
 
 app.use(morgan("dev"))
 app.use(compression())

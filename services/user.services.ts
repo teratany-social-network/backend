@@ -1,8 +1,13 @@
-import { IUser, UserModel } from "../models/user.model"
-import { TEditProfile } from "../types/TUser"
+import { serialize } from "v8"
+import { IUser, UserAccountStatus, UserModel } from "../models/user.model"
+import { TSendEmail } from "../types/TAuthentication"
+import { TEditProfile, TPrivateInfo } from "../types/TUser"
 import { ErrorHandler } from "../utils/error"
 import { generateToken } from "../utils/generateJwtToken"
+import { decodeAuthorization } from "../utils/jwtDecode"
+import { sendMail } from "../utils/nodemailer"
 import { sha } from "../utils/sha256"
+
 const userGetMask = {
     concat: 0,
     password: 0,
@@ -22,41 +27,104 @@ export const getUserById = async (id: string): Promise<IUser> => {
     })
 }
 
-export const getOneUserByUsername = async (username: string): Promise<IUser> => {
-    return UserModel.findOne({ username }, userGetMask).populate('publicator').then((user) => {
-        if (user == null) throw new Error(`Il n'y a pas d'utilisateur avec le nom d'utilisateur: ${username}`)
+export const getUserByName = async (displayName: string): Promise<IUser> => {
+    return UserModel.findOne({ displayName }, userGetMask).populate('publicator').then((user) => {
+        if (user == null) throw new ErrorHandler((`Il n'y a pas d'utilisateur nommé: ${displayName}`), 404, new Error('Utilisateur introuvable'))
+        return user.toObject()
+    })
+}
+
+export const getUserByEmail = async (email: string): Promise<IUser> => {
+    return UserModel.findOne({ email }, userGetMask).populate('publicator').then((user) => {
+        if (user == null) throw new ErrorHandler((`Il n'y a pas d'utilisateur avec l'adresse mail: ${email}`), 404, new Error('Utilisateur introuvable'))
         return user.toObject()
     })
 }
 
 export const editProfileImage = async (id: string, imageData: string) => {
-    UserModel.findByIdAndUpdate(id, { image: imageData }).catch((error: Error) => { throw new ErrorHandler(`Une erreur de connexion à la base de données s'est produite.`, error) })
-}
-export const editPassword = async (id: string, password: string) => {
-    UserModel.findByIdAndUpdate(id, { image: sha(password) }).catch((error: Error) => { throw new ErrorHandler(`Une erreur de connexion à la base de données s'est produite.`, error) })
+    UserModel.findByIdAndUpdate(id, { image: imageData }).catch((error: Error) => { throw new ErrorHandler(`Une erreur de connexion à la base de données s'est produite.`, 500, error) })
 }
 
-export const editProfile = async (updateValue: TEditProfile, privateInfo: any): Promise<String> => {
-    return UserModel.findById(updateValue._id).then((user) => {
+export const editPassword = async (id: string, password: string, newPassword: string) => {
+    const user = await UserModel.findById(id)
+    if (user) {
+        if (user.password == sha(password)) {
+            user.password = sha(newPassword)
+            await user.save()
+        } else throw new ErrorHandler(`Le mot de passe ne correspond pas`, 403, new Error())
+    } else throw new ErrorHandler(`L'utilisateur n'existe pas`, 404, new Error())
+    await UserModel.findByIdAndUpdate(id, { password: sha(password) }).catch((error: Error) => { throw new ErrorHandler(`Une erreur de connexion à la base de données s'est produite.`, 500, error) })
+}
+
+export const editProfile = async (id: string, updateValue: TEditProfile, privateInfo: TPrivateInfo): Promise<String> => {
+    return UserModel.findById(id).then((user) => {
         if (user) {
             user.email = updateValue.email
-            user.lastname = updateValue.lastname
-            user.username = updateValue.username
-            user.firstname = updateValue.firstname
+            user.displayName = updateValue.displayName
             user.address.value = updateValue.address
             user.walletId.value = updateValue.walletId
             user.coordonates.isPrivate = privateInfo.coordonates
             user.address.isPrivate === false ? user.address.isPrivate = false : user.address.isPrivate = privateInfo.address
             user.country.isPrivate === false ? user.country.isPrivate = false : user.country.isPrivate = privateInfo.country
             user.walletId.isPrivate === false ? user.walletId.isPrivate = false : user.walletId.isPrivate = privateInfo.walletId
-            user.concat = updateValue.username + " " + updateValue.firstname + " " + updateValue.lastname + " " + updateValue.email
+            user.concat = updateValue.displayName + " " + updateValue.email
+            user.coordonates.latitude = updateValue.coordonates.latitude ? updateValue.coordonates.latitude : user.coordonates.latitude
+            user.coordonates.longitude = updateValue.coordonates.longitude ? updateValue.coordonates.longitude : user.coordonates.longitude
 
-            user.save().then(() => { return generateToken(updateValue._id, updateValue.username, updateValue.email, user.role) })
+            user.save().then(() => { return generateToken(updateValue._id, updateValue.displayName, updateValue.email, user.role) })
                 .catch((error) => {
-                    if (error.code === 11000 || error.code === 11001) throw new Error("Le nom d'utilisateur ou l'adresse email est déjà utilisé par un autre utilisateur")
-                    else throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", error)
+                    if (error.code === 11000 || error.code === 11001) throw new ErrorHandler("Le nom d'utilisateur ou l'adresse email est déjà utilisé par un autre utilisateur", 401, error)
+                    else throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)
                 })
-        } else throw new Error("Le nom d'utilisateur ou l'adresse email est déjà utilisé par un autre utilisateur")
+        }
         return ''
     })
 }
+
+export const getUserByToken = async (authorization: string): Promise<IUser> => {
+    let id: String
+    try {
+        id = await decodeAuthorization(authorization).id
+    } catch (error) { throw new ErrorHandler(`Vous devez envoyer un token JWT valide`, 403, error) }
+    return UserModel.findById(id, userGetMask).populate('publicator').then((user) => {
+        if (user == null) throw new Error(`Il n'y a pas d'utilisateur avec l'id: ${id}`)
+        return user.toObject()
+    })
+}
+
+export const getUserWithCoordonates = async (): Promise<any> => {
+    return await UserModel.find({ coordonates: { isPrivate: false } }, userGetMask)
+        .then((result) => { return result })
+        .catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
+}
+
+export const passwordRecovery = async (email: string, recoveryCode: string, password: string): Promise<String> => {
+    const user = await UserModel.findOne({ email })
+    if (user) {
+        if (user.recoveryCode == recoveryCode) {
+            user.password = sha(password)
+            await user.save()
+            return generateToken(user.id, user.displayName, user.email, user.role)
+        } else throw new ErrorHandler(`Le code dee confirmation ne correspond pas`, 403, new Error())
+    } else throw new ErrorHandler(`L'utilisateur n'existe pas`, 404, new Error(`L'utilisateur n'existe pas`))
+}
+
+export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
+    let user = await UserModel.findOne({ email: email })
+    if (user) {
+        let recoveryCode = Math.floor(Math.random() * 1000)
+        user.recoveryCode = recoveryCode
+        await user.save().catch((error: Error) => { throw new ErrorHandler("Impossible de générer le code de confirmation", 500, error) })
+        let text = "Votre code de confirmation est : " + recoveryCode
+        await sendMail(email, "Email verification", text).catch((error: ErrorHandler) => { throw error })
+        return { isSent: true }
+
+    } throw new ErrorHandler(`Il n'y a pas d'utilisateur sous le mail ${email}`, 404, new Error(`Il n'y a pas d'utilisateur sous le mail ${email}`))
+}
+
+export const search = async (filter: String): Promise<any> => {
+    return await UserModel.find({ concat: { $regex: filter, $options: "i" } }, userGetMask)
+        .then((result) => { return result })
+        .catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
+}
+

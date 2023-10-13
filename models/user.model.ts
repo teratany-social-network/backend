@@ -2,11 +2,8 @@ import { Schema, model, ObjectId } from "mongoose"
 
 export interface IUser {
     _id?: string,
-    metamaskAddress?: string,
     concat: string,
-    firstname: string,
-    lastname: string,
-    username: string,
+    displayName: string,
     email: string,
     password: string,
     authType: string,
@@ -63,10 +60,7 @@ export enum AuthTypes {
 
 
 const UserSchema: Schema = new Schema<IUser>({
-    metamaskAddress: String,
-    firstname: String,
-    lastname: String,
-    username: {
+    displayName: {
         type: String,
         required: true,
         unique: true

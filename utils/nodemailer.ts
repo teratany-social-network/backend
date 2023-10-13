@@ -18,6 +18,6 @@ const sendMail = async (to: any, subject: any, text: any) => {
     }
     await transport.sendMail(mailOptions)
         .then(() => { return true })
-        .catch((error: Error) => { throw new ErrorHandler(`Impossible d'envoyer le mail ${subject} vers ${to}`, error) })
+        .catch((error: Error) => { throw new ErrorHandler(`Impossible d'envoyer le mail ${subject} vers ${to}`, 500, error) })
 }
 export { sendMail }
