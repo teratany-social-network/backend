@@ -3,8 +3,8 @@ const errorLogFile = 'errorLog.json'
 
 export class ErrorHandler extends Error {
     description: String
-    code: Number
-    constructor(message: string, code: Number, error: Error) {
+    code: number
+    constructor(message: string, code: number, error: Error) {
         super(message)
         this.code = code
         this.description = error.message
