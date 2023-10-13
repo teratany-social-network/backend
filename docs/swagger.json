@@ -3,11 +3,15 @@
         {
             "name": "authentication",
             "description": "API d'authentification Teratany"
+        },
+        {
+            "name": "user",
+            "description": "API d'utilisateur Teratany"
         }
     ],
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API",
+        "title": "Teratany API",
         "version": "1.0.0"
     },
     "paths": {
@@ -42,7 +46,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "True si le mail a été vérifié, False sinon"
+                        "description": "ok"
                     },
                     "500": {
                         "description": "Une erreur serveur s'est produite"
@@ -204,6 +208,31 @@
                 "responses": {
                     "200": {
                         "description": "un token JWT"
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Verifier la disponnibilité du nom",
+                "description": "retourne true sy le nom est libre et false si le nom est utilisé par quelqu'un",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "L'identifiant à rechercher",
+                        "example": "6528f7d0ec2defa28afe1ee4"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Les informations publique de l'utilisateur"
                     }
                 }
             }

@@ -8,51 +8,63 @@ import { TSendEmail, TSignup } from "../types/TAuthentication"
 import { PublicatorModel, PublicatorType } from "../models/publicator.model"
 import { AuthTypes, IUser, UserAccountStatus, UserModel } from "../models/user.model"
 
+
 export const checkName = async (displayName: string): Promise<Boolean> => {
-    const user = await UserModel.exists({ displayName }).catch((error: Error) => { throw new ErrorHandler("Erreur de connexion à la base de donnée, nous y travaillons!", 500, error) })
-    if (user) return false
-    return true
+    try {
+        if (await UserModel.exists({ displayName })) return false
+        return true
+    } catch (error) { throw new ErrorHandler("Erreur de connexion à la base de donnée, nous y travaillons!", 500, error) }
 }
 export const checkEmail = async (email: string): Promise<Boolean> => {
-    const user = await UserModel.exists({ email }).catch((error: Error) => { throw new ErrorHandler("Erreur de connexion à la base de donnée, nous y travaillons!", 500, error) })
-    if (user) return false
-    return true
+    try {
+        if (await UserModel.exists({ email })) return false
+        return true
+    } catch (error) { throw new ErrorHandler("Erreur de connexion à la base de donnée, nous y travaillons!", 500, error) }
 }
 
 export const sendEmail = async (email: string): Promise<TSendEmail> => {
-    let user = await UserModel.findOne({ email: email })
-    if (user) {
-        if (user.status == UserAccountStatus.active) {
-            let recoveryCode = Math.floor(Math.random() * 1000)
-            user.recoveryCode = recoveryCode
-            user.status = UserAccountStatus.pending
-            await user.save().catch((error: Error) => { throw new ErrorHandler("Impossible de générer le code de confirmation", 500, error) })
-            let text = "Votre code de confirmation est : " + recoveryCode
-            await sendMail(email, "Email verification", text).catch((error: ErrorHandler) => { throw error })
-            return { isSent: true }
+    try {
+        let user = await UserModel.findOne({ email: email })
+        if (user) {
+            if (user.status == UserAccountStatus.active) {
+                let recoveryCode = Math.floor(Math.random() * 1000)
+                user.recoveryCode = recoveryCode
+                user.status = UserAccountStatus.pending
+                await user.save()
+                let text = "Votre code de confirmation est : " + recoveryCode
+                await sendMail(email, "Email verification", text)
+                return { isSent: true }
+            }
+            return { isSent: false, message: "Votre adresse email a déjà été validée" }
         }
-        return { isSent: false, message: "Votre adresse email a déjâ été validé" }
-    } throw new ErrorHandler(`Il n'y a pas d'utilisateur sous le mail ${email}`, 404, new Error(`Il n'y a pas d'utilisateur sous le mail ${email}`))
+        throw new ErrorHandler(`Il n'y a pas d'utilisateur sous le mail ${email}`, 404, new Error(`Il n'y a pas d'utilisateur sous le mail ${email}`))
+    } catch (error) {
+        if (error instanceof ErrorHandler) throw error
+        throw new ErrorHandler("Une erreur s'est produite lors de l'envoi de l'e-mail de vérification", 500, error)
+    }
 }
 
 export const verifyEmail = async (email: string, code: string) => {
-    await UserModel.findOne({ email: email }).then(async (user) => {
+    try {
+        const user = await UserModel.findOne({ email })
         if (user) {
             if (user.recoveryCode == code) {
                 user.recoveryCode = 0
                 user.status = UserAccountStatus.active
-                await user.save().catch((error: Error) => { throw new ErrorHandler("Impossible de valider le mail de l\'utilisateur", 500, error) })
-            } else throw new ErrorHandler("Le code que vous avez fourni ne correspond pas!", 403, new Error("Le code que vous avez fourni ne correspond pas!"))
-        }
-        throw new ErrorHandler(`Il n'y a pas d'utilisateur sous le mail ${email}`, 404, new Error(`Il n'y a pas d'utilisateur sous le mail ${email}`))
-    }).catch((error: Error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
+                await user.save()
+            } else throw new ErrorHandler("Le code de confirmation fourni ne correspond pas!", 403, new Error())
+        } else throw new ErrorHandler(`Aucun utilisateur trouvé avec l'adresse e-mail ${email}`, 404, new Error())
+    } catch (error) {
+        if (error instanceof ErrorHandler) throw error
+        throw new ErrorHandler("Une erreur s'est produite lors de la validation de l'adresse e-mail de l'utilisateur", 500, error)
+    }
 }
 
 
 export const signup = async (user: TSignup): Promise<String> => {
     let token: String = ""
     if (user.displayName.length < 2) throw new ErrorHandler(`Vous devez envoyer un nom plus long (2 minimum)`, 403, new Error())
-    if (user.password.length < 4) throw new ErrorHandler(`Vous devez choisir un mot de passe plus long, au moin 4 caractères`, 403, new Error())
+    else if (user.password.length < 4) throw new ErrorHandler(`Vous devez choisir un mot de passe plus long, au moin 4 caractères`, 403, new Error())
 
     const existingUser = await UserModel.findOne({ displayName: user.displayName })
     if (existingUser) throw new ErrorHandler(`Malheureusement, le nom d'utilisateur ${user.displayName} est déjà utilisé par ${existingUser.email}.`, 403, new Error())
@@ -87,7 +99,8 @@ export const signup = async (user: TSignup): Promise<String> => {
         await newUser.save()
         token = generateToken(_id.toString(), user.displayName, user.email, 1)
     } catch (error) {
-        if (error instanceof Error) throw new ErrorHandler(`Une erreur s'est produite lors de l'inscription de l'utilisateur. Veuillez réessayer.`, 500, error)
+        if (error instanceof ErrorHandler) throw error
+        throw new ErrorHandler(`Une erreur s'est produite lors de l'inscription de l'utilisateur. Veuillez réessayer.`, 500, error)
     }
     return token
 }

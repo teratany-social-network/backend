@@ -7,10 +7,11 @@ import { IUser } from "../models/user.model"
 import { Request, Response } from "express"
 
 export const getUserByIdController = async (req: Request, res: Response) => {
-    const { id } = req.query
+    const { id } = req.params
     await getUserById(id?.toString() || "")
         .then((user: IUser) => res.send(user))
-        .catch((error: ErrorHandler) => res.status(error.code).send(error))
+        .catch((error: ErrorHandler) => console.log(error)
+        )
 }
 export const getUserByNameController = async (req: Request, res: Response) => {
     const { name } = req.query

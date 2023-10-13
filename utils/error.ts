@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-const errorLogFile = 'errorLog.json'
+const errorLogFile = './errorLog.json'
 
 export class ErrorHandler extends Error {
     description: String
@@ -8,7 +8,7 @@ export class ErrorHandler extends Error {
         super(description)
         this.code = code
         this.description = description
-        registerError(description, error)
+        // registerError(description, error)
     }
 }
 
