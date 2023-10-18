@@ -14,8 +14,8 @@ export const getUserByIdController = async (req: Request, res: Response) => {
         )
 }
 export const getUserByNameController = async (req: Request, res: Response) => {
-    const { name } = req.query
-    await getUserByName(name?.toString() || "")
+    const { displayName } = req.query
+    await getUserByName(displayName?.toString() || "")
         .then((user: IUser) => res.send(user))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
@@ -56,7 +56,9 @@ export const editProfileController = async (req: Request, res: Response) => {
 
 
 export const getUserByTokenController = async (req: Request, res: Response) => {
-    let token = req.headers.authorization || ""
+    let token = req.headers.authorization
+    console.log(token);
+
     await getUserByToken(token)
         .then((user: IUser) => res.send(user))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
@@ -76,8 +78,8 @@ export const passwordRecoveryController = async (req: Request, res: Response) =>
 }
 
 export const sendRecoveryCodeController = async (req: Request, res: Response) => {
-    const { email } = req.body
-    await sendRecoveryCode(email)
+    const { email } = req.query
+    await sendRecoveryCode(email.toString() || "")
         .then((isSent: TSendEmail) => res.send(isSent))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
