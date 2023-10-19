@@ -3,3 +3,6 @@ errorLog.json
 node_modules
 .env
 dist
+public/*
+!public/blank
+!public/resized-1697742894161-Screenshot 2023-10-11 153003.png

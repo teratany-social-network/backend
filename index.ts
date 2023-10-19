@@ -11,6 +11,7 @@ import swagger from './docs/swagger.json'
 import { AuthRouter } from "./routes/auth.routes"
 import { USerRouter } from "./routes/user.routes"
 import { SwaggerTheme } from "swagger-themes"
+import { FileRouter } from "./routes/file.routes"
 
 dotenv.config()
 const app = express()
@@ -42,6 +43,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/user/authentication', AuthRouter)
 app.use('/user/', USerRouter)
+app.use('/upload/', FileRouter)
 
 app.use("/public", express.static(path.join(__dirname, "/public")))
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

@@ -1,6 +1,10 @@
 {
     "tags": [
         {
+            "name": "file",
+            "description": "Interagir avec le serveur de fichier"
+        },
+        {
             "name": "authentication",
             "description": "API d'authentification Teratany"
         },
@@ -480,6 +484,100 @@
                 "responses": {
                     "200": {
                         "description": "Mot de passe modifié"
+                    }
+                }
+            }
+        },
+        "/upload": {
+            "post": {
+                "tags": [
+                    "file"
+                ],
+                "summary": "Upload and Resize Image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "images": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            },
+                            "encoding": {
+                                "profileImage": {
+                                    "contentType": "image/png, image/jpeg",
+                                    "headers": {
+                                        "X-Custom-Header": {
+                                            "description": "This is a custom header",
+                                            "schema": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request. No file uploaded."
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/public/{filename}": {
+            "get": {
+                "tags": [
+                    "file"
+                ],
+                "summary": "Télécharger une image",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "filename",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "nom du fichier",
+                        "example": "resized-1697742894161-Screenshot 2023-10-11 153003.png"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "image/png": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            },
+                            "image/jpeg": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Image not found"
                     }
                 }
             }

@@ -14,6 +14,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/multer": "^1.4.9",
+    "@types/sharp": "^0.32.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -22,10 +24,13 @@
     "jwt-decode": "^3.1.2",
     "mongoose": "^7.5.3",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.5",
     "npm-run-all": "^4.1.5",
     "path": "^0.12.7",
+    "resize-img": "^2.0.0",
     "rimraf": "^5.0.5",
+    "sharp": "^0.32.6",
     "swagger-jsdoc": "^6.2.8",
     "swagger-themes": "^1.2.30",
     "swagger-ui-express": "^5.0.0"
@@ -40,6 +45,7 @@
     "@types/morgan": "^1.9.6",
     "@types/node": "^20.8.2",
     "@types/nodemailer": "^6.4.11",
+    "@types/resize-img": "^2.0.2",
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.4",
     "jest": "^29.7.0",
