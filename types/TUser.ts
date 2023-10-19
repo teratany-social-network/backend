@@ -12,7 +12,8 @@ export type TEditProfile = {
     },
     coordonates: {
         latitude?: number,
-        longitude?: number
+        longitude?: number,
+        isPrivate: boolean
     }
 }
 

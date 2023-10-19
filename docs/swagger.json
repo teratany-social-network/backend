@@ -378,6 +378,110 @@
                         "description": "le mail a été envoyé"
                     }
                 }
+            },
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Modifier le mot de passe",
+                "description": "Modifier le mot de passe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Le nouveau mot de passe",
+                                        "example": "Pass1234"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "le mail de la personne qui va recuperer son mot de passe",
+                                        "example": "example@mail.com"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "description": "Le code reçu par email"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe récupéré"
+                    }
+                }
+            }
+        },
+        "/user/profileImage/": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Modifier la photo de profil, reçoit l'url de la photo",
+                "description": "Cette terminaison permer de changer la photo de profil d'une personne connecté, en envoyant le token JWT et le lien de la photo",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "imageUrl": {
+                                        "type": "string",
+                                        "description": "Lien de l'image"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Photo de profil modifié"
+                    }
+                }
+            }
+        },
+        "/user/password/": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Modifier le mot de passe",
+                "description": "Modifier le mot de passe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Le mot de passe actuel",
+                                        "example": "Pass1234"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "description": "Le nouveau mot de passe",
+                                        "example": "Pass1234"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe modifié"
+                    }
+                }
             }
         }
     }

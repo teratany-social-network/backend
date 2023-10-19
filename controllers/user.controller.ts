@@ -27,10 +27,10 @@ export const getUserByEmailController = async (req: Request, res: Response) => {
 }
 
 export const editProfileImageController = async (req: Request, res: Response) => {
-    const { imageData } = req.body
+    const { imageUrl } = req.body
     let token = req.headers.authorization || ""
     let id: string = await decodeAuthorization(token).id
-    await editProfileImage(id, imageData)
+    await editProfileImage(id, imageUrl)
         .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
@@ -71,8 +71,8 @@ export const getUserWithCoordonatesController = async (req: Request, res: Respon
 }
 
 export const passwordRecoveryController = async (req: Request, res: Response) => {
-    const { email, recovery, password } = req.body
-    await passwordRecovery(email, recovery, password)
+    const { email, code, password } = req.body
+    await passwordRecovery(email, code, password)
         .then((token: String) => res.send(token))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
