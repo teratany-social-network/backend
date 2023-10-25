@@ -8,7 +8,6 @@ export class ErrorHandler extends Error {
         super(description)
         this.code = code
         this.description = description
-        // registerError(description, error)
     }
 }
 

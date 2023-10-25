@@ -10,6 +10,10 @@ export type TEditProfile = {
         value: string,
         isPrivate: boolean
     },
+    country: {
+        value: string,
+        isPrivate: boolean
+    },
     coordonates: {
         latitude?: number,
         longitude?: number,

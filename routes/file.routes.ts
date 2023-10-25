@@ -42,7 +42,6 @@ FileRouter.post("/", fileUpload.array("images", 30), async (req: Request, res: R
         }
         res.send(uploadedFiles)
     } catch (err) {
-        console.log(err);
         if (err instanceof ErrorHandler) throw err
         else throw new ErrorHandler("Impossible de télécharger vos images, nous y travaillons", 500, err)
 

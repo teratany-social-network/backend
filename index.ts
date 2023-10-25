@@ -8,6 +8,7 @@ import bodyParser from "body-parser"
 import compression from "compression"
 import swaggerUi from 'swagger-ui-express'
 import swagger from './docs/swagger.json'
+import statusMonitor from 'express-status-monitor'
 import { AuthRouter } from "./routes/auth.routes"
 import { USerRouter } from "./routes/user.routes"
 import { SwaggerTheme } from "swagger-themes"
@@ -36,6 +37,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(combinedSwaggerDocument, optio
 
 app.use(morgan("dev"))
 app.use(compression())
+app.use(statusMonitor())
 app.use(bodyParser.json())
 app.use(cors({ origin: "*" }))
 app.use(express.static("public"))

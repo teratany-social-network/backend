@@ -1,12 +1,12 @@
 {
     "tags": [
         {
-            "name": "file",
-            "description": "Interagir avec le serveur de fichier"
-        },
-        {
             "name": "authentication",
             "description": "API d'authentification Teratany"
+        },
+        {
+            "name": "file",
+            "description": "Interagir avec le serveur de fichier"
         },
         {
             "name": "user",
@@ -33,6 +33,42 @@
         }
     ],
     "paths": {
+        "/user/authentication/signin": {
+            "post": {
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Connexion à un compte Teratany",
+                "description": "le formulaire de connexion, il retourne soit un token JWT",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "L'adresse email de l'utilisateur",
+                                        "example": "example@mail.org"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Son mot de passe",
+                                        "example": "Pass1234"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "un token JWT"
+                    }
+                }
+            }
+        },
         "/user/authentication/verifyEmail": {
             "post": {
                 "tags": [
@@ -181,42 +217,6 @@
                                         "type": "string",
                                         "description": "L'adresse email de l'utilisateur",
                                         "example": "example@mail.org"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "un token JWT"
-                    }
-                }
-            }
-        },
-        "/user/authentication/signin": {
-            "post": {
-                "tags": [
-                    "authentication"
-                ],
-                "summary": "Connexion à un compte Teratany",
-                "description": "le formulaire de connexion, il retourne soit un token JWT",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "description": "L'adresse email de l'utilisateur",
-                                        "example": "example@mail.org"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "description": "Son mot de passe",
-                                        "example": "Pass1234"
                                     }
                                 }
                             }
@@ -448,6 +448,106 @@
                 "responses": {
                     "200": {
                         "description": "Photo de profil modifié"
+                    }
+                }
+            }
+        },
+        "/user/profile/": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Modifier les informations générales de l'utilisateur",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "displayName": {
+                                        "type": "string",
+                                        "description": "Le nom de l'utilisateur",
+                                        "example": "Jon Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "Le mail",
+                                        "example": "example@mail.com"
+                                    },
+                                    "address": {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "string",
+                                                "description": "L'adresse de l'utilisateur",
+                                                "example": "Ambohimangakely, Antananarivo"
+                                            },
+                                            "isPrivate": {
+                                                "type": "boolean",
+                                                "description": "Est-ce que l'adresse de l'utilisateur est privée",
+                                                "example": true
+                                            }
+                                        }
+                                    },
+                                    "country": {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "string",
+                                                "description": "Le pays de l'utilisateur",
+                                                "example": "Madagascar"
+                                            },
+                                            "isPrivate": {
+                                                "type": "boolean",
+                                                "description": "Est-ce que le pays de l'utilisateur est privée",
+                                                "example": true
+                                            }
+                                        }
+                                    },
+                                    "walletId": {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "string",
+                                                "description": "Le wallet deviantCoin de l'utilisateur",
+                                                "example": "12345654323456788765432"
+                                            },
+                                            "isPrivate": {
+                                                "type": "boolean",
+                                                "description": "Est-ce que le walletId de l'utilisateur est privée",
+                                                "example": true
+                                            }
+                                        }
+                                    },
+                                    "coordonates": {
+                                        "type": "object",
+                                        "properties": {
+                                            "latitude": {
+                                                "type": "number",
+                                                "description": "La longitude de la position de l'utilisateur",
+                                                "example": "18.456765"
+                                            },
+                                            "longitude": {
+                                                "type": "number",
+                                                "description": "La longitude de la position de l'utilisateur",
+                                                "example": "25.98908"
+                                            },
+                                            "isPrivate": {
+                                                "type": "boolean",
+                                                "description": "Est-ce que la position géographique de l'utilisateur est privée",
+                                                "example": true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe modifié"
                     }
                 }
             }

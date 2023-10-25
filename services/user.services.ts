@@ -57,22 +57,21 @@ export const editPassword = async (id: string, password: string, newPassword: st
     await UserModel.findByIdAndUpdate(id, { password: sha(password) }).catch((error: Error) => { throw new ErrorHandler(`Une erreur de connexion à la base de données s'est produite.`, 500, error) })
 }
 
-export const editProfile = async (id: string, updateValue: TEditProfile, privateInfo: TPrivateInfo): Promise<String> => {
-    return UserModel.findById(id).then((user) => {
-        if (user) {
-            user.email = updateValue.email
-            user.displayName = updateValue.displayName
-            user.address.value = updateValue.address
-            user.walletId.value = updateValue.walletId
-            user.coordonates.isPrivate = privateInfo.coordonates
-            user.address.isPrivate === false ? user.address.isPrivate = false : user.address.isPrivate = privateInfo.address
-            user.country.isPrivate === false ? user.country.isPrivate = false : user.country.isPrivate = privateInfo.country
-            user.walletId.isPrivate === false ? user.walletId.isPrivate = false : user.walletId.isPrivate = privateInfo.walletId
-            user.concat = updateValue.displayName + " " + updateValue.email
-            user.coordonates.latitude = updateValue.coordonates.latitude ? updateValue.coordonates.latitude : user.coordonates.latitude
-            user.coordonates.longitude = updateValue.coordonates.longitude ? updateValue.coordonates.longitude : user.coordonates.longitude
+export const editProfile = async (id: string, updateValue: TEditProfile): Promise<String> => {
 
-            user.save().then(() => { return generateToken(updateValue._id, updateValue.displayName, updateValue.email, user.role) })
+    return await UserModel.findById(id).then(async (user) => {
+
+        if (user) {
+            user.displayName = updateValue.displayName
+            user.email = updateValue.email
+            user.address = updateValue.address
+            user.country = updateValue.country
+            user.walletId = updateValue.walletId
+            user.coordonates = updateValue.coordonates
+
+            user.concat = updateValue.displayName + " " + updateValue.email
+
+            return await user.save().then(() => { return generateToken(updateValue._id, updateValue.displayName, updateValue.email, user.role) })
                 .catch((error) => {
                     if (error.code === 11000 || error.code === 11001) throw new ErrorHandler("Le nom d'utilisateur ou l'adresse email est déjà utilisé par un autre utilisateur", 401, error)
                     else throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)

@@ -10,8 +10,7 @@ export const getUserByIdController = async (req: Request, res: Response) => {
     const { id } = req.params
     await getUserById(id?.toString() || "")
         .then((user: IUser) => res.send(user))
-        .catch((error: ErrorHandler) => console.log(error)
-        )
+        .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 export const getUserByNameController = async (req: Request, res: Response) => {
     const { displayName } = req.query
@@ -45,11 +44,10 @@ export const editPasswordeController = async (req: Request, res: Response) => {
 }
 
 export const editProfileController = async (req: Request, res: Response) => {
-    const userData = req.body.userData as TEditProfile
-    const privateInfo = req.body.privateInfo as TPrivateInfo
+    const userData = req.body as TEditProfile
     let token = req.headers.authorization || ""
     let id: string = await decodeAuthorization(token).id
-    await editProfile(id, userData, privateInfo)
+    await editProfile(id, userData)
         .then((token: String) => res.send(token))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
@@ -57,8 +55,6 @@ export const editProfileController = async (req: Request, res: Response) => {
 
 export const getUserByTokenController = async (req: Request, res: Response) => {
     let token = req.headers.authorization
-    console.log(token);
-
     await getUserByToken(token)
         .then((user: IUser) => res.send(user))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
