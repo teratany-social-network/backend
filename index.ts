@@ -7,12 +7,12 @@ import mongoose from "mongoose"
 import bodyParser from "body-parser"
 import compression from "compression"
 import swaggerUi from 'swagger-ui-express'
-import swagger from './docs/swagger.json'
 import statusMonitor from 'express-status-monitor'
 import { AuthRouter } from "./routes/auth.routes"
 import { USerRouter } from "./routes/user.routes"
 import { SwaggerTheme } from "swagger-themes"
 import { FileRouter } from "./routes/file.routes"
+import { swaggerDoc } from "./docs/swaggerDoc"
 
 dotenv.config()
 const app = express()
@@ -21,9 +21,7 @@ const PORT = process.env.PORT || 8080
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/teratany"
 mongoose.set("strictQuery", false).connect(MONGO_URL).then(() => console.log("MongoDB connected to: " + MONGO_URL)).catch(() => "MongoDB connection Error")
 
-const combinedSwaggerDocument = {
-    ...swagger,
-}
+
 
 const theme = new SwaggerTheme('v3');
 
@@ -33,7 +31,7 @@ const options = {
     customSiteTitle: 'Documentation Teratany',
     displayOperationId: true
 };
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(combinedSwaggerDocument, options))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options))
 
 app.use(morgan("dev"))
 app.use(compression())

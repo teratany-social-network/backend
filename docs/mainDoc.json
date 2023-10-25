@@ -1,0 +1,40 @@
+{
+    "tags": [
+        {
+            "name": "authentication",
+            "description": "API d'authentification Teratany"
+        },
+        {
+            "name": "file",
+            "description": "Interagir avec le serveur de fichier"
+        },
+        {
+            "name": "user",
+            "description": "API d'utilisateur Teratany"
+        },
+        {
+            "name": "pages",
+            "description": "Les pages (associations et entreprises)"
+        }
+    ],
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Teratany API",
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {}
+}

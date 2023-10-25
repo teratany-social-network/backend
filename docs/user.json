@@ -1,0 +1,360 @@
+{
+    "/user/{id}": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Verifier la disponnibilité du nom",
+            "description": "retourne true sy le nom est libre et false si le nom est utilisé par quelqu'un",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant à rechercher",
+                    "example": "6528f7d0ec2defa28afe1ee4"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Les informations publique de l'utilisateur"
+                }
+            }
+        }
+    },
+    "/user/": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Recherche d'utilisateur",
+            "description": "Recherche d'utilisateur, retourne une liste des utilisateurs correspondant au filter de recherche",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "filter",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "nom ou email"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "liste des utilisateurs correspondant"
+                }
+            }
+        }
+    },
+    "/user/displayName": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Recherche dun utilisateur par son displayName",
+            "description": "Recherche d'utilisateur, retourne les donnée de l'utilisateur sinon retourne une erreur",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "displayName",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "nom de l'utilisateur"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "l'utilisateurs correspondant"
+                }
+            }
+        }
+    },
+    "/user/email": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Recherche dun utilisateur par son email",
+            "description": "Recherche d'utilisateur, retourne les donnée de l'utilisateur sinon retourne une erreur",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "email",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "email l'utilisateur"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "l'utilisateurs correspondant"
+                }
+            }
+        }
+    },
+    "/user/withCoordonates": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "summary": "La liste des utilisateurs ayant mis leurs position géographique en public",
+            "description": "La liste des utilisateurs ayant mis leurs position géographique en public",
+            "responses": {
+                "200": {
+                    "description": "l'utilisateurs correspondant"
+                }
+            }
+        }
+    },
+    "/user/byToken": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
+            "summary": "Voir les information de l'utilisateur connecté",
+            "description": "Recherche d'utilisateur, retourne les donnée de l'utilisateur sinon retourne une erreur",
+            "responses": {
+                "200": {
+                    "description": "l'utilisateurs connecté"
+                }
+            }
+        }
+    },
+    "/user/password/recovery": {
+        "get": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Envoyer email pour récuperer le mot de passe de l'utilisateur",
+            "description": "Un code de confirmation sera envoyé par email à l'utilisateur.",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "email",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "email l'utilisateur"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "le mail a été envoyé"
+                }
+            }
+        },
+        "patch": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Modifier le mot de passe",
+            "description": "Modifier le mot de passe",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "password": {
+                                    "type": "string",
+                                    "description": "Le nouveau mot de passe",
+                                    "example": "Pass1234"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "le mail de la personne qui va recuperer son mot de passe",
+                                    "example": "example@mail.com"
+                                },
+                                "code": {
+                                    "type": "string",
+                                    "description": "Le code reçu par email"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe récupéré"
+                }
+            }
+        }
+    },
+    "/user/profileImage/": {
+        "patch": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Modifier la photo de profil, reçoit l'url de la photo",
+            "description": "Cette terminaison permer de changer la photo de profil d'une personne connecté, en envoyant le token JWT et le lien de la photo",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "imageUrl": {
+                                    "type": "string",
+                                    "description": "Lien de l'image"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Photo de profil modifié"
+                }
+            }
+        }
+    },
+    "/user/profile/": {
+        "patch": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Modifier les informations générales de l'utilisateur",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "displayName": {
+                                    "type": "string",
+                                    "description": "Le nom de l'utilisateur",
+                                    "example": "Jon Doe"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "Le mail",
+                                    "example": "example@mail.com"
+                                },
+                                "address": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "L'adresse de l'utilisateur",
+                                            "example": "Ambohimangakely, Antananarivo"
+                                        },
+                                        "isPrivate": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que l'adresse de l'utilisateur est privée",
+                                            "example": true
+                                        }
+                                    }
+                                },
+                                "country": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "Le pays de l'utilisateur",
+                                            "example": "Madagascar"
+                                        },
+                                        "isPrivate": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que le pays de l'utilisateur est privée",
+                                            "example": true
+                                        }
+                                    }
+                                },
+                                "walletId": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "Le wallet deviantCoin de l'utilisateur",
+                                            "example": "12345654323456788765432"
+                                        },
+                                        "isPrivate": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que le walletId de l'utilisateur est privée",
+                                            "example": true
+                                        }
+                                    }
+                                },
+                                "coordonates": {
+                                    "type": "object",
+                                    "properties": {
+                                        "latitude": {
+                                            "type": "number",
+                                            "description": "La longitude de la position de l'utilisateur",
+                                            "example": "18.456765"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "description": "La longitude de la position de l'utilisateur",
+                                            "example": "25.98908"
+                                        },
+                                        "isPrivate": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que la position géographique de l'utilisateur est privée",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/user/password/": {
+        "patch": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Modifier le mot de passe",
+            "description": "Modifier le mot de passe",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "password": {
+                                    "type": "string",
+                                    "description": "Le mot de passe actuel",
+                                    "example": "Pass1234"
+                                },
+                                "newPassword": {
+                                    "type": "string",
+                                    "description": "Le nouveau mot de passe",
+                                    "example": "Pass1234"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    }
+}
