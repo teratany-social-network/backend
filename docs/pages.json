@@ -48,7 +48,7 @@
         }
     },
     "/pages/search/": {
-        "patch": {
+        "get": {
             "tags": [
                 "pages"
             ],
@@ -140,6 +140,298 @@
             "responses": {
                 "200": {
                     "description": "SUCCESS"
+                }
+            }
+        }
+    },
+    "/pages/profilePicture/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier la photo de profile d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "url": {
+                                    "type": "string",
+                                    "description": "Lien de l'image",
+                                    "example": "https://api.teratany.org/public/default.png"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/name/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier le nom d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Le nouveau nom",
+                                    "example": "Ampela Mijoro 2.0"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/description/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier la description d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "La nouvelle description de la page",
+                                    "example": "Cette association est incoyable"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/category/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier les catégories d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "description": "Les nouvelles catégorie de la page",
+                                    "example": "adf"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/address/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier l'adresse et le pays d'origine d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "description": "La nouvelle adresse de la page",
+                                    "example": "Analakely, Antananarivo"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "description": "Le nouveau de la page",
+                                    "example": "Madagascar"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/contact/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier les contacts d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "phoneNumber": {
+                                    "type": "string"
+                                },
+                                "website": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/walletId/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier le wallet deviantcoin d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "deviantWalletID": {
+                                    "type": "string",
+                                    "description": "Le nouveau deviantWalletID",
+                                    "example": "dSSPDMr8JqF7ms6zVVLzpKXUQsB2k4yCzW"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/coordonates/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Modifier les coordonées géographiques (latitude, longitude) d'une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pageId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la page",
+                                    "example": "6528f7d0ec2defa28afe1ee4"
+                                },
+                                "latitude": {
+                                    "type": "number",
+                                    "example": 18.754567
+                                },
+                                "longitude": {
+                                    "type": "number",
+                                    "example": -27.58572
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
                 }
             }
         }
