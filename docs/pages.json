@@ -1,1 +1,147 @@
-{}
+{
+    "/pages/{id}": {
+        "get": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Get les informations de la page graçe à son ID",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant à rechercher",
+                    "example": "dSSPDMr8JqF7ms6zVVLzpKXUQsB2k4yCzW"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "SUCCESS"
+                }
+            }
+        }
+    },
+    "/pages/checkWallet/{wallet}": {
+        "get": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Verifier si le wallet deviantcoin est valide",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "wallet",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Le wallet à verifier",
+                    "example": "6528f7d0ec2defa28afe1ee4"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "SUCCESS"
+                }
+            }
+        }
+    },
+    "/pages/search/": {
+        "patch": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Rechercher les pages en utilisant name, country, category, type",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "name",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "example": "Ampela Mijoro"
+                },
+                {
+                    "in": "query",
+                    "name": "country",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "example": "MG"
+                },
+                {
+                    "in": "query",
+                    "name": "category",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "La catégorie recherchée",
+                    "example": "a"
+                },
+                {
+                    "in": "query",
+                    "name": "type",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "association ou entreprise",
+                    "example": "entreprise"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
+    },
+    "/pages/administred/{userId}": {
+        "get": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Avoir la liste des pages que l'utilisateur dirige",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "userId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant de l'utilisateur'",
+                    "example": "6528f7d0ec2defa28afe1ee4"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "SUCCESS"
+                }
+            }
+        }
+    },
+    "/pages/administrator/{pageId}": {
+        "get": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Avoir la liste des administrateurs d'une page",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "pageId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant de la page'",
+                    "example": "6528f7d0ec2defa28afe1ee4"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "SUCCESS"
+                }
+            }
+        }
+    }
+}

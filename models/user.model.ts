@@ -37,7 +37,6 @@ export interface IUser {
 
     },
     isMale: boolean,
-    adminAndPage: Array<String>,
     coordonates: {
         longitude: Number,
         latitude: Number,
@@ -119,7 +118,6 @@ const UserSchema: Schema = new Schema<IUser>({
     recoveryCode: String,
     sendRecoveryCount: Number,
     sendRecoveryLastTime: Date,
-    adminAndPage: Array<String>,
     notification: Array<String>,
     notificationCount: Number,
     reaction: Array<String>,

@@ -10,6 +10,7 @@ import swaggerUi from 'swagger-ui-express'
 import statusMonitor from 'express-status-monitor'
 import { AuthRouter } from "./routes/auth.routes"
 import { USerRouter } from "./routes/user.routes"
+import { PageRouter } from "./routes/page.routes"
 import { SwaggerTheme } from "swagger-themes"
 import { FileRouter } from "./routes/file.routes"
 import { swaggerDoc } from "./docs/swaggerDoc"
@@ -35,7 +36,21 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options))
 
 app.use(morgan("dev"))
 app.use(compression())
-app.use(statusMonitor())
+app.use(statusMonitor({
+    title: 'Teratany Status',
+    theme: 'default.css',
+    healthChecks: [{
+        protocol: 'http',
+        host: 'localhost',
+        path: '/user/',
+        port: '8080'
+    }, {
+        protocol: 'http',
+        host: 'localhost',
+        path: '/public/blank',
+        port: '8080'
+    }]
+}))
 app.use(bodyParser.json())
 app.use(cors({ origin: "*" }))
 app.use(express.static("public"))
@@ -44,6 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/user/authentication', AuthRouter)
 app.use('/user/', USerRouter)
 app.use('/upload/', FileRouter)
+app.use('/pages/', PageRouter)
 
 app.use("/public", express.static(path.join(__dirname, "/public")))
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
