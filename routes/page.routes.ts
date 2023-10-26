@@ -3,6 +3,8 @@ import { checkIfWalletExistController, createPageController, getAdministratorLis
 import { searchController } from "../controllers/user.controller"
 import { authenticateToken } from "../middleware/authentificationToken"
 const PageRouter = Router()
+PageRouter.post('/', (req, res) => createPageController(req, res))
+
 PageRouter.get('/id/:id', (req, res) => getPageByIdController(req, res))
 PageRouter.get('/checkWallet/:wallet', (req, res) => checkIfWalletExistController(req, res))
 PageRouter.get('/search', (req, res) => searchController(req, res))
@@ -18,6 +20,5 @@ PageRouter.patch('/contact', authenticateToken, (req, res) => updateContactContr
 PageRouter.patch('/walletId', authenticateToken, (req, res) => updatedeviantWalletIDController(req, res))
 PageRouter.patch('/coordonates', authenticateToken, (req, res) => updateCoordonatesController(req, res))
 
-PageRouter.post('/', (req, res) => createPageController(req, res))
 
 export { PageRouter }

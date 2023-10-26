@@ -16,14 +16,15 @@ export const isAdmin = async (token: string, pageId: string): Promise<number> =>
     }
 }
 
-export const getPageById = async (id: string): Promise<IPage> => {
-    try { return await PageModel.findById(id).populate('publicator') }
-    catch (error) { throw new ErrorHandler("Error interne au serveur, nous y travaillons", 500, error) }
+export const getPageById = async (id: string): Promise<IPage | unknown> => {
+    const page = await PageModel.findById(id).populate('publicator').catch((error) => { throw new ErrorHandler("Error interne au serveur, nous y travaillons", 500, error) })
+    if (page == null || page == undefined) throw new ErrorHandler("Cette page n'existe pas", 404, new Error())
+    return page
 }
 
 export const checkIfWalletExist = async (walletId: string): Promise<Boolean> => {
     let walletData = await axios(`https://explorer.deviantcoin.io/ext/getaddress/${walletId}`).catch((error) => { throw new ErrorHandler("Impossible de verifier le wallet pour l'istant. Nous y travaillons", 500, error) })
-    if (walletData.data.details === 'Invalid address') throw new ErrorHandler("Vous avez entré un Wallet deviantcoin invalide", 404, new Error())
+    if (walletData.data.details === 'Invalid address') throw new ErrorHandler("Vous avez entré un Wallet deviantcoin invalide", 401, new Error())
     else return true
 }
 
@@ -45,7 +46,7 @@ export const getAdministredPageList = async (userId: String): Promise<any> => {
 
 export const getAdministratorList = async (pageId: String): Promise<any> => {
     try {
-        return await AdminAndPageModel.find({ page: pageId }).populate('admins')
+        return await AdminAndPageModel.find({ page: pageId }).populate('admin')
     } catch (error) { throw new ErrorHandler("Error interne au serveur, nous y travaillons", 500, error) }
 }
 
@@ -86,6 +87,7 @@ export const updateContact = async (pageId: string, phoneNumber: string, website
 }
 
 export const updatedeviantWalletID = async (pageId: string, deviantWalletID: string, token: string) => {
+    await checkIfWalletExist(deviantWalletID).catch((error: ErrorHandler) => { throw error })
     if (await isAdmin(token, pageId) > 0)
         await PageModel.findByIdAndUpdate(pageId, { deviantWalletID }).catch((error) => { throw new ErrorHandler("Error interne au serveur, nous y travaillons", 500, error) })
     else throw new ErrorHandler("Vous n'êtes pas administrateur de cette page", 403, new Error)
@@ -118,6 +120,7 @@ export const createPage = async (token: string, page: IPageGeneral): Promise<Str
 
     let newPage = new PageModel({
         ...page,
+        _id: pageId,
         publicator: publicatorId
     })
 

@@ -3,10 +3,15 @@ import { IPage, IPageGeneral } from "../models/page.model";
 import { checkIfWalletExist, createPage, getAdministratorList, getAdministredPageList, getPageById, search, updateAddress, updateCategory, updateContact, updateCoordonates, updateDescription, updateName, updateProfilePicture, updatedeviantWalletID } from "../services/pages.services";
 import { ErrorHandler } from "../utils/error";
 
-export const getPageByIdController = (req: Request, res: Response) => {
+export const getPageByIdController = async (req: Request, res: Response) => {
     const { id } = req.params
-    getPageById(id)
-        .then((page: IPage) => res.send(page))
+    console.log(id);
+
+    await getPageById(id)
+        .then((page: IPage) => {
+            console.log(page);
+            res.send(page)
+        })
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
