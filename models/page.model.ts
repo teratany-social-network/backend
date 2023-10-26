@@ -14,12 +14,14 @@ export interface IPageGeneral {
     phoneNumber: string;
     website: string;
     name: string;
-    coordonates: string[]; // [latitude, longitude]
-    image?: string; // profil picture filename
+    coordonates: {
+        latitude: number,
+        longitude: number
+
+    }; // [latitude, longitude]
     description: string; // about the page
     address: string;
     country: string;
-    contact: string[]; // email, phone number
     deviantWalletID: string; // deviantcoin wallet ID, must be unique and must exist
     pageType: string; // association or entreprise
     category: string; // RSE if the pageType is entreprise and SDG if the page is an association
@@ -30,15 +32,17 @@ export interface IPage {
     email: string;
     phoneNumber: string;
     website: string;
-    oldname?: string; // store the old name of the page when the name is changed
     name: string;
-    coordonates: string[]; // [latitude, longitude]
+    coordonates: {
+        latitude: number,
+        longitude: number
+
+    }; // [latitude, longitude]
     image?: string; // profil picture filename
     description: string; // about the page
     followers?: number; // number of follower
     address: string;
     country: string;
-    contact: string[]; // email, phone number
     deviantWalletID: string; // deviantcoin wallet ID, must be unique and must exist
     posts: string[]; // list of the page posts
     admins: string[]; // list of admin and page collection

@@ -435,5 +435,95 @@
                 }
             }
         }
+    },
+    "/pages": {
+        "post": {
+            "tags": [
+                "pages"
+            ],
+            "summary": "Créer une page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "Email pour contacter la page",
+                                    "example": "example@mail.com"
+                                },
+                                "phoneNumber": {
+                                    "type": "string",
+                                    "description": "Numéro de téléphone pour contacter la page",
+                                    "example": "+261 38 12 345 57"
+                                },
+                                "website": {
+                                    "type": "string",
+                                    "description": "Site web de la page",
+                                    "example": "www.teratany.org"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Nom de la page",
+                                    "example": "Ampela Mijoro"
+                                },
+                                "coordonates": {
+                                    "type": "object",
+                                    "properties": {
+                                        "latitude": {
+                                            "type": "number",
+                                            "description": "La longitude de la position de l'association ou de l'entreprise",
+                                            "example": "18.456765"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "description": "La longitude de la position de l'association ou de l'entreprise",
+                                            "example": "25.98908"
+                                        }
+                                    }
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description de la page",
+                                    "example": "Ampela Mijoro est incroyable"
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "description": "Adresse de la page",
+                                    "example": "Antananarivo"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "description": "Pays de la page",
+                                    "example": "Madagascar"
+                                },
+                                "deviantWalletID": {
+                                    "type": "string",
+                                    "description": "deviantWalletID de la page",
+                                    "example": "dSSPDMr8JqF7ms6zVVLzpKXUQsB2k4yCzW"
+                                },
+                                "pageType": {
+                                    "type": "string",
+                                    "description": "entreprise ou association",
+                                    "example": "association"
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "description": "categories de ODD ou de RSE",
+                                    "example": "adf"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Mot de passe modifié"
+                }
+            }
+        }
     }
 }
