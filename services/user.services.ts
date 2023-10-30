@@ -59,6 +59,7 @@ export const editPassword = async (id: string, password: string, newPassword: st
 
 export const editProfile = async (id: string, updateValue: TEditProfile): Promise<String> => {
 
+
     return await UserModel.findById(id).then(async (user) => {
 
         if (user) {
@@ -67,7 +68,6 @@ export const editProfile = async (id: string, updateValue: TEditProfile): Promis
             user.address = updateValue.address
             user.country = updateValue.country
             user.walletId = updateValue.walletId
-            user.coordonates = updateValue.coordonates
 
             user.concat = updateValue.displayName + " " + updateValue.email
 
@@ -75,6 +75,22 @@ export const editProfile = async (id: string, updateValue: TEditProfile): Promis
                 .catch((error) => {
                     if (error.code === 11000 || error.code === 11001) throw new ErrorHandler("Le nom d'utilisateur ou l'adresse email est déjà utilisé par un autre utilisateur", 401, error)
                     else throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)
+                })
+        }
+        return ''
+    })
+}
+
+export const editCoordonates = async (id: string, updateValue: TEditProfile): Promise<String> => {
+
+
+    return await UserModel.findById(id).then(async (user) => {
+
+        if (user) {
+            user.coordonates = updateValue.coordonates
+            return await user.save().then(() => { return generateToken(updateValue._id, updateValue.displayName, updateValue.email, user.role) })
+                .catch((error) => {
+                    throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)
                 })
         }
         return ''

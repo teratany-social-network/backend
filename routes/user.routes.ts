@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { editPasswordeController, editProfileController, editProfileImageController, getUserByEmailController, getUserByIdController, getUserByNameController, getUserByTokenController, getUserWithCoordonatesController, passwordRecoveryController, searchController, sendRecoveryCodeController } from "../controllers/user.controller"
+import { editPasswordeController, editCoordonatesController, editProfileController, editProfileImageController, getUserByEmailController, getUserByIdController, getUserByNameController, getUserByTokenController, getUserWithCoordonatesController, passwordRecoveryController, searchController, sendRecoveryCodeController } from "../controllers/user.controller"
 import { authenticateToken } from "../middleware/authentificationToken"
 const USerRouter = Router()
 USerRouter.get('/', (req, res) => searchController(req, res))
@@ -14,5 +14,6 @@ USerRouter.patch('/password/recovery', (req, res) => passwordRecoveryController(
 USerRouter.patch('/profileImage', authenticateToken, (req, res) => editProfileImageController(req, res))
 USerRouter.patch('/password', authenticateToken, (req, res) => editPasswordeController(req, res))
 USerRouter.patch('/profile', authenticateToken, (req, res) => editProfileController(req, res))
+USerRouter.patch('/coordonates', authenticateToken, (req, res) => editCoordonatesController(req, res))
 
 export { USerRouter }
