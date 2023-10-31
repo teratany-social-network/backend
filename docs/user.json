@@ -356,5 +356,38 @@
                 }
             }
         }
+    },
+    "/user/coordonates": {
+        "patch": {
+            "tags": [
+                "user"
+            ],
+            "summary": "Modifier les coordonées géographiques",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "latitude": {
+                                    "type": "string",
+                                    "example": "-18.57476"
+                                },
+                                "longitude": {
+                                    "type": "string",
+                                    "example": "24.9816286"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "coordonées mis à jour"
+                }
+            }
+        }
     }
 }

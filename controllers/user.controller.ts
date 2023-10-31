@@ -1,5 +1,5 @@
 import { getUserById, editCoordonates, editProfileImage, getUserByName, editPassword, editProfile, getUserByToken, getUserWithCoordonates, passwordRecovery, sendRecoveryCode, search, getUserByEmail } from "../services/user.services"
-import { TEditProfile, TPrivateInfo } from "../types/TUser"
+import { TCoordonates, TEditProfile, TPrivateInfo } from "../types/TUser"
 import { decodeAuthorization } from "../utils/jwtDecode"
 import { TSendEmail } from "../types/TAuthentication"
 import { ErrorHandler } from "../utils/error"
@@ -53,11 +53,11 @@ export const editProfileController = async (req: Request, res: Response) => {
 }
 
 export const editCoordonatesController = async (req: Request, res: Response) => {
-    const userData = req.body as TEditProfile
+    const newCoordonates = req.body as TCoordonates
     let token = req.headers.authorization || ""
     let id: string = await decodeAuthorization(token).id
-    await editCoordonates(id, userData)
-        .then((token: String) => res.send(token))
+    await editCoordonates(id, newCoordonates)
+        .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 

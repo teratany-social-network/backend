@@ -1,7 +1,6 @@
-import { serialize } from "v8"
-import { IUser, UserAccountStatus, UserModel } from "../models/user.model"
+import { IUser, UserModel } from "../models/user.model"
 import { TSendEmail } from "../types/TAuthentication"
-import { TEditProfile, TPrivateInfo } from "../types/TUser"
+import { TCoordonates, TEditProfile, TPrivateInfo } from "../types/TUser"
 import { ErrorHandler } from "../utils/error"
 import { generateToken } from "../utils/generateJwtToken"
 import { decodeAuthorization } from "../utils/jwtDecode"
@@ -24,17 +23,17 @@ export const getUserById = async (id: string): Promise<IUser> => {
     try {
         const user = await UserModel.findById(id, userGetMask).populate({
             path: 'publicator',
-            populate: {
-                path: 'publications',
-                populate: [{
-                    path: 'commentaires',
-                    populate: 'user'
-                },
-                {
-                    path: 'reactions',
-                    populate: 'user'
-                }]
-            }
+            // populate: {
+            //     path: 'publications',
+            //     populate: [{
+            //         path: 'commentaires',
+            //         populate: 'user'
+            //     },
+            //     {
+            //         path: 'reactions',
+            //         populate: 'user'
+            //     }]
+            // }
         })
         if (!user) throw new ErrorHandler(`Il n'y a pas d'utilisateur avec l'id: ${id}`, 404, new Error())
         return user.toObject()
@@ -97,19 +96,12 @@ export const editProfile = async (id: string, updateValue: TEditProfile): Promis
     })
 }
 
-export const editCoordonates = async (id: string, updateValue: TEditProfile): Promise<String> => {
-
-
+export const editCoordonates = async (id: string, coordonates: TCoordonates) => {
     return await UserModel.findById(id).then(async (user) => {
-
         if (user) {
-            user.coordonates = updateValue.coordonates
-            return await user.save().then(() => { return generateToken(updateValue._id, updateValue.displayName, updateValue.email, user.role) })
-                .catch((error) => {
-                    throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)
-                })
+            user.coordonates = coordonates
+            return await user.save().catch((error) => { throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error) })
         }
-        return ''
     })
 }
 

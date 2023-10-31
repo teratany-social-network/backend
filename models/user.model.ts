@@ -36,7 +36,6 @@ export interface IUser {
         isPrivate: boolean,
 
     },
-    isMale: boolean,
     coordonates: {
         longitude: Number,
         latitude: Number,
@@ -105,7 +104,6 @@ const UserSchema: Schema = new Schema<IUser>({
         type: Date,
         default: Date.now()
     },
-    isMale: Boolean,
     concat: String,
     role: {
         type: Number,

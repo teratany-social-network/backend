@@ -27,3 +27,8 @@ export type TPrivateInfo = {
     country: boolean,
     walletId: boolean,
 }
+
+export type TCoordonates = {
+    longitude: number,
+    latitude: number,
+}
