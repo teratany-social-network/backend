@@ -15,6 +15,10 @@
         {
             "name": "pages",
             "description": "Les pages (associations et entreprises)"
+        },
+        {
+            "name": "publicators",
+            "description": "Les publicator (utilisateurs, associations et entreprises)"
         }
     ],
     "openapi": "3.0.0",
