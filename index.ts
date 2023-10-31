@@ -14,6 +14,7 @@ import { PageRouter } from "./routes/page.routes"
 import { SwaggerTheme } from "swagger-themes"
 import { FileRouter } from "./routes/file.routes"
 import { swaggerDoc } from "./docs/swaggerDoc"
+import { PublicatorRouter } from "./routes/pulicator.routes"
 
 dotenv.config()
 const app = express()
@@ -60,6 +61,7 @@ app.use('/user/authentication', AuthRouter)
 app.use('/user/', USerRouter)
 app.use('/upload/', FileRouter)
 app.use('/pages/', PageRouter)
+app.use('/publicator/', PublicatorRouter)
 
 app.use("/public", express.static(path.join(__dirname, "/public")))
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

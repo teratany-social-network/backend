@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { authenticateToken } from "../middleware/authentificationToken"
-const USerRouter = Router()
-USerRouter.get('/:id', (req, res) => getByPublicator(req, res))
+import { getByPublicatorController } from "../controllers/publicator.controller"
+const PublicatorRouter = Router()
+PublicatorRouter.get('/:id', (req, res) => getByPublicatorController(req, res))
 
-export { USerRouter }
+export { PublicatorRouter }
