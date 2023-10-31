@@ -17,7 +17,6 @@ export interface IPageGeneral {
     coordonates: {
         latitude: number,
         longitude: number
-
     }; // [latitude, longitude]
     description: string; // about the page
     address: string;

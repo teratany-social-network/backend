@@ -9,6 +9,7 @@ export interface IPublicator {
     _id?: string,
     type: PublicatorType,
     userId?: ObjectId,
+    publications?: ObjectId[],
     pageId?: ObjectId,
     followers?: Number
 }
@@ -29,7 +30,11 @@ const PublicatorSchema: Schema = new Schema<IPublicator>({
     followers: {
         type: Number,
         default: 0
-    }
+    },
+    publications: [{
+        type: Types.ObjectId,
+        ref: 'publications'
+    }]
 })
 
 export const PublicatorModel = model<IPublicator>('publicators', PublicatorSchema)

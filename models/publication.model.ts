@@ -4,8 +4,8 @@ export interface IPub {
     content: string,
     images: Array<string>,
     date?: Date,
-    reaction?: Array<Types.ObjectId>,
-    commentaire?: Array<Types.ObjectId>,
+    reactions?: Array<Types.ObjectId>,
+    commentaires?: Array<Types.ObjectId>,
 }
 
 
@@ -22,15 +22,15 @@ const PublicationSchema: Schema = new Schema<IPub>({
         type: Date,
         default: Date.now
     },
-    commentaire: [{
+    commentaires: [{
         type: Schema.Types.ObjectId,
-        ref: 'commentaire'
+        ref: 'commentaires'
     }],
-    reaction: [{
+    reactions: [{
         type: Schema.Types.ObjectId,
-        ref: 'reaction'
+        ref: 'reactions'
     }]
 })
 
-export const PublicationModel = mongoose.model('publication', PublicationSchema)
+export const PublicationModel = mongoose.model('publications', PublicationSchema)
 

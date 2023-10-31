@@ -22,10 +22,26 @@ const userGetMask = {
 
 export const getUserById = async (id: string): Promise<IUser> => {
     try {
-        const user = await UserModel.findById(id, userGetMask).populate('publicator')
+        const user = await UserModel.findById(id, userGetMask).populate({
+            path: 'publicator',
+            populate: {
+                path: 'publications',
+                populate: [{
+                    path: 'commentaires',
+                    populate: 'user'
+                },
+                {
+                    path: 'reactions',
+                    populate: 'user'
+                }]
+            }
+        })
         if (!user) throw new ErrorHandler(`Il n'y a pas d'utilisateur avec l'id: ${id}`, 404, new Error())
         return user.toObject()
-    } catch (error) { throw new ErrorHandler(`Une erreur s'est produite lors de la recherche de l'utilisateur par ID: ${id}`, 500, error) }
+    } catch (error) {
+        console.log(error);
+        throw new ErrorHandler(`Une erreur s'est produite lors de la recherche de l'utilisateur par ID: ${id}`, 500, error)
+    }
 }
 
 export const getUserByName = async (displayName: string): Promise<IUser> => {
