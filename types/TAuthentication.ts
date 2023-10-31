@@ -4,7 +4,7 @@ export type TSendEmail = {
 }
 
 export type TSignup = {
-    displayName: string,
+    name: string,
     email: string,
     password: string,
 }

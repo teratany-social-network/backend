@@ -4,20 +4,20 @@ export type TEditProfile = {
     email: string,
     address: {
         value: string,
-        isPrivate: boolean
+        isPublic: boolean
     },
     walletId: {
         value: string,
-        isPrivate: boolean
+        isPublic: boolean
     },
     country: {
         value: string,
-        isPrivate: boolean
+        isPublic: boolean
     },
     coordonates: {
         latitude?: number,
         longitude?: number,
-        isPrivate: boolean
+        isPublic: boolean
     }
 }
 
