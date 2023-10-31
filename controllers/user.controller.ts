@@ -1,4 +1,4 @@
-import { getUserById, editProfileImage, getUserByName, editPassword, editProfile, getUserByToken, getUserWithCoordonates, passwordRecovery, sendRecoveryCode, search, getUserByEmail } from "../services/user.services"
+import { getUserById, editCoordonates, editProfileImage, getUserByName, editPassword, editProfile, getUserByToken, getUserWithCoordonates, passwordRecovery, sendRecoveryCode, search, getUserByEmail } from "../services/user.services"
 import { TEditProfile, TPrivateInfo } from "../types/TUser"
 import { decodeAuthorization } from "../utils/jwtDecode"
 import { TSendEmail } from "../types/TAuthentication"
@@ -48,6 +48,15 @@ export const editProfileController = async (req: Request, res: Response) => {
     let token = req.headers.authorization || ""
     let id: string = await decodeAuthorization(token).id
     await editProfile(id, userData)
+        .then((token: String) => res.send(token))
+        .catch((error: ErrorHandler) => res.status(error.code).send(error))
+}
+
+export const editCoordonatesController = async (req: Request, res: Response) => {
+    const userData = req.body as TEditProfile
+    let token = req.headers.authorization || ""
+    let id: string = await decodeAuthorization(token).id
+    await editCoordonates(id, userData)
         .then((token: String) => res.send(token))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
