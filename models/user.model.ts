@@ -3,7 +3,7 @@ import { Schema, model, ObjectId } from "mongoose"
 export interface IUser {
     _id?: string,
     concat: string,
-    displayName: string,
+    name: string,
     email: string,
     password: string,
     authType: string,
@@ -20,35 +20,28 @@ export interface IUser {
     isVerified: boolean,
     job: Array<String>,
     publicator?: ObjectId,
-    status: UserAccountStatus,
+    status: string,
     address: {
         value: string,
-        isPrivate: boolean,
-
+        isPublic: boolean,
     },
     country: {
         value: string,
-        isPrivate: boolean,
-
+        isPublic: boolean,
     },
     walletId: {
         value: string,
-        isPrivate: boolean,
-
+        isPublic: boolean,
     },
     coordonates: {
         longitude: Number,
         latitude: Number,
-        isPrivate: boolean
+        isPublic: boolean
     },
 
 }
 
-export enum UserAccountStatus {
-    pending = "pending",
-    active = "active",
-    locked = "locked"
-}
+
 export enum AuthTypes {
     classic = "classic",
     facebook = "facebook",
@@ -58,7 +51,7 @@ export enum AuthTypes {
 
 
 const UserSchema: Schema = new Schema<IUser>({
-    displayName: {
+    name: {
         type: String,
         required: true,
         unique: true
@@ -68,7 +61,7 @@ const UserSchema: Schema = new Schema<IUser>({
             type: String,
             default: '',
         },
-        isPrivate: {
+        isPublic: {
             type: Boolean,
             default: true
         }
@@ -78,7 +71,7 @@ const UserSchema: Schema = new Schema<IUser>({
             type: String,
             default: '',
         },
-        isPrivate: {
+        isPublic: {
             type: Boolean,
             default: true
         }
@@ -93,7 +86,7 @@ const UserSchema: Schema = new Schema<IUser>({
             type: String,
             default: '',
         },
-        isPrivate: {
+        isPublic: {
             type: Boolean,
             default: true
         }
@@ -130,7 +123,7 @@ const UserSchema: Schema = new Schema<IUser>({
             type: Number,
             default: 0
         },
-        isPrivate: {
+        isPublic: {
             type: Boolean,
             default: true
         }

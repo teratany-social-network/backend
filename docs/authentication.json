@@ -1,5 +1,5 @@
 {
-    "/user/authentication/signin": {
+    "/authentication/signin": {
         "post": {
             "tags": [
                 "authentication"
@@ -16,7 +16,7 @@
                                 "email": {
                                     "type": "string",
                                     "description": "L'adresse email de l'utilisateur",
-                                    "example": "example@mail.org"
+                                    "example": "example@gmail.com"
                                 },
                                 "password": {
                                     "type": "string",
@@ -35,7 +35,7 @@
             }
         }
     },
-    "/user/authentication/verifyEmail": {
+    "/authentication/verifyEmail": {
         "post": {
             "tags": [
                 "authentication"
@@ -52,7 +52,7 @@
                                 "email": {
                                     "type": "string",
                                     "description": "L'adresse email a verifier.",
-                                    "example": "example@mail.org"
+                                    "example": "example@gmail.com"
                                 },
                                 "code": {
                                     "type": "number",
@@ -74,7 +74,7 @@
             }
         }
     },
-    "/user/authentication/signup": {
+    "/authentication/signup": {
         "post": {
             "tags": [
                 "authentication"
@@ -91,9 +91,9 @@
                                 "email": {
                                     "type": "string",
                                     "description": "L'adresse email de l'utilisateur, un email ne peut être utilisé qu'une seule fois",
-                                    "example": "example@mail.org"
+                                    "example": "example@gmail.com"
                                 },
-                                "displayName": {
+                                "name": {
                                     "type": "string",
                                     "description": "Minimum 2 caractères, maximum 32. Doit être unique",
                                     "example": "Jon Doe 64"
@@ -115,7 +115,7 @@
             }
         }
     },
-    "/user/authentication/checkName": {
+    "/authentication/checkName": {
         "get": {
             "tags": [
                 "authentication"
@@ -125,7 +125,7 @@
             "parameters": [
                 {
                     "in": "query",
-                    "name": "displayName",
+                    "name": "name",
                     "schema": {
                         "type": "string"
                     },
@@ -140,7 +140,7 @@
             }
         }
     },
-    "/user/authentication/checkEmail": {
+    "/authentication/checkEmail": {
         "get": {
             "tags": [
                 "authentication"
@@ -165,7 +165,7 @@
             }
         }
     },
-    "/user/authentication/sendEmail": {
+    "/authentication/sendEmail": {
         "post": {
             "tags": [
                 "authentication"
@@ -182,7 +182,7 @@
                                 "email": {
                                     "type": "string",
                                     "description": "L'adresse email de l'utilisateur",
-                                    "example": "example@mail.org"
+                                    "example": "example@gmail.com"
                                 }
                             }
                         }

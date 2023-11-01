@@ -1,11 +1,7 @@
 import { Schema, model, ObjectId, Types } from "mongoose"
-import { IContact, ILocalisation, IConfirmation, ProfileType, ProfileAccountStatus } from "../types/profile"
+import { IContact, ILocalisation, IConfirmation } from "../types/profile"
 
-export enum UserAccountStatus {
-    pending = "pending",
-    active = "active",
-    locked = "locked"
-}
+
 
 export interface IProfile {
     _id: ObjectId,
@@ -29,7 +25,7 @@ export interface IProfile {
 }
 
 const profileSchema = new Schema<IProfile>({
-    name: String,
+    name: { type: String, required: true, unique: true },
     image: { type: String, default: '' },
     password: String,
     description: { type: String, default: '' },
@@ -42,7 +38,7 @@ const profileSchema = new Schema<IProfile>({
         recoveryCode: { type: String, default: '' },
         sendRecoveryCount: Number,
         sendRecoveryLastTime: Date,
-        accountStatus: ProfileAccountStatus
+        accountStatus: String
     },
     localisation: {
         address: {

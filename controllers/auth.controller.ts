@@ -4,8 +4,8 @@ import { ErrorHandler } from "../utils/error"
 import { TSendEmail, TSignup } from "../types/TAuthentication"
 
 export const checkNameController = async (req: Request, res: Response) => {
-    const { displayName } = req.query
-    checkName(displayName?.toString() || "")
+    const { name } = req.query
+    checkName(name?.toString() || "")
         .then((response: Boolean) => res.send(response))
         .catch((error: ErrorHandler) => res.status(error.code).send({ error }))
 }

@@ -1,40 +1,40 @@
-import { getUserById, editCoordonates, editProfileImage, getUserByName, editPassword, editProfile, getUserByToken, getUserWithCoordonates, passwordRecovery, sendRecoveryCode, search, getUserByEmail } from "../services/user.services"
-import { TCoordonates, TEditProfile, TPrivateInfo } from "../types/TUser"
 import { decodeAuthorization } from "../utils/jwtDecode"
 import { TSendEmail } from "../types/TAuthentication"
 import { ErrorHandler } from "../utils/error"
-import { IUser } from "../models/user.model"
 import { Request, Response } from "express"
+import { editLocalisation, editPassword, editProfileGeneral, editProfileImage, getProfileByEmail, getProfileById, getProfileByName, getProfileByToken, getProfileWithCoordonates, passwordRecovery, search, sendRecoveryCode } from "../services/profile.services"
+import { IProfile } from "../models/profile.model"
+import { ILocalisation } from "../types/profile"
 
-export const getUserByIdController = async (req: Request, res: Response) => {
+export const getProfileByIdController = async (req: Request, res: Response) => {
     const { id } = req.params
-    await getUserById(id?.toString() || "")
-        .then((user: IUser) => res.send(user))
+    await getProfileById(id?.toString() || "")
+        .then((profile: IProfile) => res.send(profile))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
-export const getUserByNameController = async (req: Request, res: Response) => {
-    const { displayName } = req.query
-    await getUserByName(displayName?.toString() || "")
-        .then((user: IUser) => res.send(user))
+export const getProfileByNameController = async (req: Request, res: Response) => {
+    const { name } = req.query
+    await getProfileByName(name?.toString() || "")
+        .then((profile: IProfile) => res.send(profile))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
-export const getUserByEmailController = async (req: Request, res: Response) => {
+export const getProfileByEmailController = async (req: Request, res: Response) => {
     const { email } = req.query
-    await getUserByEmail(email?.toString() || "")
-        .then((user: IUser) => res.send(user))
+    await getProfileByEmail(email?.toString() || "")
+        .then((profile: IProfile) => res.send(profile))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
 export const editProfileImageController = async (req: Request, res: Response) => {
-    const { imageUrl } = req.body
+    const { image } = req.body
     let token = req.headers.authorization || ""
     let id: string = await decodeAuthorization(token).id
-    await editProfileImage(id, imageUrl)
+    await editProfileImage(id, image)
         .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
-export const editPasswordeController = async (req: Request, res: Response) => {
+export const editPasswordController = async (req: Request, res: Response) => {
     const { password, newPassword } = req.body
     let token = req.headers.authorization || ""
     let id: string = await decodeAuthorization(token).id
@@ -43,35 +43,32 @@ export const editPasswordeController = async (req: Request, res: Response) => {
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
-export const editProfileController = async (req: Request, res: Response) => {
-    const userData = req.body as TEditProfile
-    let token = req.headers.authorization || ""
-    let id: string = await decodeAuthorization(token).id
-    await editProfile(id, userData)
-        .then((token: String) => res.send(token))
+export const editProfileGeneralController = async (req: Request, res: Response) => {
+    let { id, name, description, email } = req.body
+    await editProfileGeneral(id, name, description, email)
+        .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
-export const editCoordonatesController = async (req: Request, res: Response) => {
-    const newCoordonates = req.body as TCoordonates
-    let token = req.headers.authorization || ""
-    let id: string = await decodeAuthorization(token).id
-    await editCoordonates(id, newCoordonates)
+export const editLocalisationController = async (req: Request, res: Response) => {
+    const { id } = req.body
+    const newCoordonates = req.body as ILocalisation
+    await editLocalisation(id, newCoordonates)
         .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
 
-export const getUserByTokenController = async (req: Request, res: Response) => {
+export const getProfileByTokenController = async (req: Request, res: Response) => {
     let token = req.headers.authorization
-    await getUserByToken(token)
-        .then((user: IUser) => res.send(user))
+    await getProfileByToken(token)
+        .then((profile: IProfile) => res.send(profile))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
-export const getUserWithCoordonatesController = async (req: Request, res: Response) => {
-    await getUserWithCoordonates()
-        .then((users: any) => res.send(users))
+export const getProfileWithCoordonatesController = async (req: Request, res: Response) => {
+    await getProfileWithCoordonates()
+        .then((profiles: any) => res.send(profiles))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 
@@ -92,6 +89,6 @@ export const sendRecoveryCodeController = async (req: Request, res: Response) =>
 export const searchController = async (req: Request, res: Response) => {
     const { filter } = req.query
     await search(filter?.toString() || '')
-        .then((users: any) => res.send(users))
+        .then((profiles: any) => res.send(profiles))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }

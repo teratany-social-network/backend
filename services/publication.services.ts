@@ -12,7 +12,7 @@ export const searchByPublicator = async (publicatorId: String): Promise<any[]> =
     try {
         const publicator = await PublicatorModel.findById(publicatorId)
         if (publicator) {
-            let populatePublicator = { path: 'userId', select: 'displayName image _id publicator' }
+            let populatePublicator = { path: 'userId', select: 'name image _id publicator' }
             if (publicator.type != "user") populatePublicator = { path: 'pageId', select: 'name image _id publicator' }
             const publications = await PublicationModel.find({ publicator: publicatorId })
                 .populate({ path: 'publicator', populate: { ...populatePublicator } })

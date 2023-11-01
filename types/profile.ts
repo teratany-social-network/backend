@@ -1,8 +1,3 @@
-export enum ProfileAccountStatus {
-    pending = "pending",
-    active = "active",
-    locked = "locked"
-}
 export enum ProfileType {
     pending = "user",
     active = "association",
@@ -12,7 +7,7 @@ export interface IConfirmation {
     recoveryCode: string,
     sendRecoveryCount: number,
     sendRecoveryLastTime: Date,
-    accountStatus: ProfileAccountStatus
+    accountStatus: string
 }
 export interface ILocalisation {
     address: {

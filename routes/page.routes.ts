@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { checkIfWalletExistController, createPageController, getAdministratorListController, getAdministredPageListController, getPageByIdController, updateAddressController, updateCategoryController, updateContactController, updateCoordonatesController, updateDescriptionController, updateNameController, updateProfilePictureController, updatedeviantWalletIDController } from "../controllers/pages.controller"
-import { searchController } from "../controllers/user.controller"
+import { searchController } from "../controllers/profile.controller"
 import { authenticateToken } from "../middleware/authentificationToken"
 const PageRouter = Router()
 PageRouter.post('/', (req, res) => createPageController(req, res))

@@ -9,7 +9,7 @@ import compression from "compression"
 import swaggerUi from 'swagger-ui-express'
 import statusMonitor from 'express-status-monitor'
 import { AuthRouter } from "./routes/auth.routes"
-import { USerRouter } from "./routes/user.routes"
+import { ProfileRouter } from "./routes/profile.routes"
 import { PageRouter } from "./routes/page.routes"
 import { SwaggerTheme } from "swagger-themes"
 import { FileRouter } from "./routes/file.routes"
@@ -21,7 +21,7 @@ const app = express()
 const PORT = process.env.PORT || 8080
 
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/teratany"
-mongoose.set("strictQuery", false).connect(MONGO_URL).then(() => console.log("MongoDB connected to: " + MONGO_URL)).catch(() => "MongoDB connection Error")
+mongoose.set("strictQuery", false).connect(MONGO_URL).then(() => console.log("🥭  Database   : " + MONGO_URL)).catch(() => "MongoDB connection Error")
 
 
 
@@ -43,7 +43,7 @@ app.use(statusMonitor({
     healthChecks: [{
         protocol: 'http',
         host: 'localhost',
-        path: '/user/',
+        path: '/profile/',
         port: '8080'
     }, {
         protocol: 'http',
@@ -57,11 +57,15 @@ app.use(cors({ origin: "*" }))
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/user/authentication', AuthRouter)
-app.use('/user/', USerRouter)
-app.use('/upload/', FileRouter)
-app.use('/pages/', PageRouter)
-app.use('/publicator/', PublicatorRouter)
+app.use('/authentication', AuthRouter)
+app.use('/profile', ProfileRouter)
+app.use('/upload', FileRouter)
+app.use('/pages', PageRouter)
+app.use('/publicator', PublicatorRouter)
 
 app.use("/public", express.static(path.join(__dirname, "/public")))
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+app.listen(PORT, () => {
+    console.log(`\n⚡  BaseURL    : http://localhost:${PORT}`)
+    console.log(`📃  API Docs   : http://localhost:${PORT}/docs`)
+    console.log(`📊  Monitoring : http://localhost:${PORT}/status`)
+})

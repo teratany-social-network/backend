@@ -1,15 +1,13 @@
 
 import mainDoc from './mainDoc.json'
-import user from './user.json'
+import profile from './profile.json'
 import file from './file.json'
 import pages from './pages.json'
-import publicator from './publicator.json'
 import authentication from './authentication.json'
 const mergedDoc = {
     ...authentication,
-    ...publicator,
     ...file,
-    ...user,
+    ...profile,
     ...pages
 }
 

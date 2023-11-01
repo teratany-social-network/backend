@@ -12,7 +12,7 @@ export const getByPublicator = async (id: string): Promise<any> => {
                         { path: 'reactions', populate: 'user' }
                     ]
                 },
-                { path: 'userId', select: 'displayName email account_date image address country walletId coordonates' },
+                { path: 'userId', select: 'name email account_date image address country walletId coordonates' },
                 { path: 'pageId' }
             ]
         )
