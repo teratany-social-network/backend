@@ -17,7 +17,7 @@ const profileGetMask = {
 
 export const getProfileById = async (id: string): Promise<IProfile> => {
     const profile = await ProfileModel.findById(id, profileGetMask)
-        .catch((error) => { throw new ErrorHandler(`Une erreur s'est produite lors de la recherche du profil par ID: ${id}`, 500, error) })
+        .catch((error) => { throw new ErrorHandler(`${id} n'est pas un identifiant de profile valide`, 403, error) })
     if (!profile) throw new ErrorHandler(`Il n'y a pas de profil avec l'id: ${id}`, 404, new Error())
     return profile.toObject()
 }
@@ -43,12 +43,13 @@ export const editProfileImage = async (id: string, image: string) => {
 export const editPassword = async (id: string, password: string, newPassword: string) => {
     const profile = await ProfileModel.findById(id)
     if (profile) {
-        if (profile.password == sha(password)) {
-            profile.password = sha(newPassword)
-            await profile.save()
-        } else throw new ErrorHandler(`Le mot de passe ne correspond pas`, 403, new Error())
+        if (profile.profileType == 'user') {
+            if (profile.password == sha(password)) {
+                profile.password = sha(newPassword)
+                await profile.save()
+            } else throw new ErrorHandler(`Le mot de passe ne correspond pas`, 403, new Error())
+        } else throw new ErrorHandler(`Les ${profile.profileType} ne peuvent pas avoir de mot de passe`, 401, new Error())
     } else throw new ErrorHandler(`Le profil n'existe pas`, 404, new Error())
-    await ProfileModel.findByIdAndUpdate(id, { password: sha(password) }).catch((error: Error) => { throw new ErrorHandler(`Une erreur de connexion à la base de données s'est produite.`, 500, error) })
 }
 
 export const editProfileGeneral = async (id: string, name: string, description: string, email: string) => {
@@ -80,14 +81,14 @@ export const getProfileByToken = async (authorization: string): Promise<IProfile
     try {
         id = await decodeAuthorization(authorization).id
     } catch (error) { throw new ErrorHandler(`Vous devez envoyer un token JWT valide`, 403, error) }
-    return ProfileModel.findById(id, profileGetMask).then((profile) => {
+    return ProfileModel.findById(id).then((profile) => {
         if (profile == null) throw new Error(`Il n'y a pas d'utilisateur avec l'id: ${id}`)
         return profile.toObject()
     })
 }
 
 export const getProfileWithCoordonates = async (): Promise<any> => {
-    return await ProfileModel.find({ localisation: { coordonates: { isPublic: true } } }, profileGetMask)
+    return await ProfileModel.find({ 'localisation.coordonates.isPublic': true }, profileGetMask)
         .catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
 }
 
@@ -96,6 +97,7 @@ export const passwordRecovery = async (email: string, recoveryCode: string, pass
     if (profile) {
         if (profile.confirmation.recoveryCode == recoveryCode) {
             profile.password = sha(password)
+            profile.confirmation.recoveryCode = '0'
             await profile.save()
             return generateToken(profile.id, profile.name, email, profile.role)
         } else throw new ErrorHandler(`Le code dee confirmation ne correspond pas`, 403, new Error())

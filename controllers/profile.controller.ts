@@ -26,9 +26,8 @@ export const getProfileByEmailController = async (req: Request, res: Response) =
 }
 
 export const editProfileImageController = async (req: Request, res: Response) => {
-    const { image } = req.body
-    let token = req.headers.authorization || ""
-    let id: string = await decodeAuthorization(token).id
+    const { image, id } = req.body
+
     await editProfileImage(id, image)
         .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))

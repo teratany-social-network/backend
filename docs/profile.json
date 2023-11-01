@@ -187,7 +187,7 @@
             }
         }
     },
-    "/profile/profileImage/": {
+    "/profile/image/": {
         "patch": {
             "tags": [
                 "profile"
@@ -201,9 +201,13 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "imageUrl": {
+                                "image": {
                                     "type": "string",
                                     "description": "Lien de l'image"
+                                },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id du profil"
                                 }
                             }
                         }
@@ -217,7 +221,7 @@
             }
         }
     },
-    "/profile/profile/": {
+    "/profile/general/": {
         "patch": {
             "tags": [
                 "profile"
@@ -230,6 +234,11 @@
                         "schema": {
                             "type": "object",
                             "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Identifiant du profile",
+                                    "example": "65427cc04553b97e16c74f27"
+                                },
                                 "name": {
                                     "type": "string",
                                     "description": "Le nom de du profile",
@@ -240,70 +249,10 @@
                                     "description": "Le mail",
                                     "example": "example@mail.com"
                                 },
-                                "address": {
-                                    "type": "object",
-                                    "properties": {
-                                        "value": {
-                                            "type": "string",
-                                            "description": "L'adresse de du profile",
-                                            "example": "Ambohimangakely, Antananarivo"
-                                        },
-                                        "isPublic": {
-                                            "type": "boolean",
-                                            "description": "Est-ce que l'adresse de du profile est privée",
-                                            "example": true
-                                        }
-                                    }
-                                },
-                                "country": {
-                                    "type": "object",
-                                    "properties": {
-                                        "value": {
-                                            "type": "string",
-                                            "description": "Le pays de du profile",
-                                            "example": "Madagascar"
-                                        },
-                                        "isPublic": {
-                                            "type": "boolean",
-                                            "description": "Est-ce que le pays de du profile est privée",
-                                            "example": true
-                                        }
-                                    }
-                                },
-                                "walletId": {
-                                    "type": "object",
-                                    "properties": {
-                                        "value": {
-                                            "type": "string",
-                                            "description": "Le wallet deviantCoin de du profile",
-                                            "example": "12345654323456788765432"
-                                        },
-                                        "isPublic": {
-                                            "type": "boolean",
-                                            "description": "Est-ce que le walletId de du profile est privée",
-                                            "example": true
-                                        }
-                                    }
-                                },
-                                "coordonates": {
-                                    "type": "object",
-                                    "properties": {
-                                        "latitude": {
-                                            "type": "number",
-                                            "description": "La longitude de la position de du profile",
-                                            "example": "18.456765"
-                                        },
-                                        "longitude": {
-                                            "type": "number",
-                                            "description": "La longitude de la position de du profile",
-                                            "example": "25.98908"
-                                        },
-                                        "isPublic": {
-                                            "type": "boolean",
-                                            "description": "Est-ce que la position géographique de du profile est privée",
-                                            "example": true
-                                        }
-                                    }
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description de l'association ou de l'entreprise ou bio de l'utilisateur",
+                                    "example": "Description de l'association ou de l'entreprise ou bio de l'utilisateur"
                                 }
                             }
                         }
@@ -312,7 +261,7 @@
             },
             "responses": {
                 "200": {
-                    "description": "Mot de passe modifié"
+                    "description": "Informations générales modifiés"
                 }
             }
         }
@@ -353,7 +302,7 @@
             }
         }
     },
-    "/profile/coordonates": {
+    "/profile/localisation": {
         "patch": {
             "tags": [
                 "profile"
@@ -366,13 +315,60 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "latitude": {
+                                "id": {
                                     "type": "string",
-                                    "example": "-18.57476"
+                                    "description": "Identifiant de profile",
+                                    "example": "65427cc04553b97e16c74f27"
                                 },
-                                "longitude": {
-                                    "type": "string",
-                                    "example": "24.9816286"
+                                "address": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "L'adresse de du profile",
+                                            "example": "Ambohimangakely, Antananarivo"
+                                        },
+                                        "isPublic": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que l'adresse de du profile est privée",
+                                            "example": true
+                                        }
+                                    }
+                                },
+                                "country": {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "string",
+                                            "description": "Le pays de du profile",
+                                            "example": "Madagascar"
+                                        },
+                                        "isPublic": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que le pays de du profile est privée",
+                                            "example": true
+                                        }
+                                    }
+                                },
+                                "coordonates": {
+                                    "type": "object",
+                                    "properties": {
+                                        "latitude": {
+                                            "type": "number",
+                                            "description": "La longitude de la position de du profile",
+                                            "example": "18.456765"
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "description": "La longitude de la position de du profile",
+                                            "example": "25.98908"
+                                        },
+                                        "isPublic": {
+                                            "type": "boolean",
+                                            "description": "Est-ce que la position géographique de du profile est privée",
+                                            "example": true
+                                        }
+                                    }
                                 }
                             }
                         }
