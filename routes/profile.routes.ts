@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { authenticateToken } from "../middleware/authentificationToken"
-import { editLocalisationController, searchController, editPasswordController, editProfileImageController, getProfileByEmailController, getProfileByIdController, getProfileByNameController, getProfileByTokenController, getProfileWithCoordonatesController, passwordRecoveryController, sendRecoveryCodeController, editProfileGeneralController } from "../controllers/profile.controller"
+import { editLocalisationController, searchController, editPasswordController, editProfileImageController, getProfileByEmailController, getProfileByIdController, getProfileByNameController, getProfileByTokenController, getProfileWithCoordonatesController, passwordRecoveryController, sendRecoveryCodeController, editProfileGeneralController, editCategoriesController, editContactController, createProfileController } from "../controllers/profile.controller"
 
 const ProfileRouter = Router()
 ProfileRouter.get('/', (req, res) => searchController(req, res))
@@ -16,5 +16,9 @@ ProfileRouter.patch('/image', authenticateToken, (req, res) => editProfileImageC
 ProfileRouter.patch('/password', authenticateToken, (req, res) => editPasswordController(req, res))
 ProfileRouter.patch('/general', authenticateToken, (req, res) => editProfileGeneralController(req, res))
 ProfileRouter.patch('/localisation', authenticateToken, (req, res) => editLocalisationController(req, res))
+//not documented
+ProfileRouter.patch('/categories', authenticateToken, (req, res) => editCategoriesController(req, res))
+ProfileRouter.patch('/contact', authenticateToken, (req, res) => editContactController(req, res))
+ProfileRouter.post('/create', authenticateToken, (req, res) => createProfileController(req, res))
 
 export { ProfileRouter }

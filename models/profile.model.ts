@@ -16,7 +16,8 @@ export interface IProfile {
     confirmation: IConfirmation,
     localisation: ILocalisation,
     contact: IContact,
-    secondaryProfiles: ObjectId[],
+    administratedProfiles: ObjectId[],
+    admins: ObjectId[],
     notifications: ObjectId[],
     publications: ObjectId[],
     following: ObjectId[],
@@ -43,7 +44,7 @@ const profileSchema = new Schema<IProfile>({
     localisation: {
         address: {
             value: { type: String, default: '' },
-            isPublic: { type: Boolean, default: true },
+            isPublic: { type: Boolean, default: true, unique: true },
         },
         country: {
             value: { type: String, default: '' },
@@ -60,7 +61,11 @@ const profileSchema = new Schema<IProfile>({
         website: { type: String, default: '' },
         email: { type: String, default: '' }
     },
-    secondaryProfiles: [{
+    administratedProfiles: [{
+        type: Types.ObjectId,
+        ref: 'profiles'
+    }],
+    admins: [{
         type: Types.ObjectId,
         ref: 'profiles'
     }],

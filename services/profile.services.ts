@@ -1,6 +1,6 @@
 import { IProfile, ProfileModel } from "../models/profile.model"
 import { TSendEmail } from "../types/TAuthentication"
-import { ILocalisation } from "../types/profile"
+import { IContact, ICreateProfile, ILocalisation } from "../types/profile"
 import { ErrorHandler } from "../utils/error"
 import { generateToken } from "../utils/generateJwtToken"
 import { decodeAuthorization } from "../utils/jwtDecode"
@@ -76,6 +76,7 @@ export const editLocalisation = async (id: string, localisation: ILocalisation) 
     })
 }
 
+
 export const getProfileByToken = async (authorization: string): Promise<IProfile> => {
     let id: String
     try {
@@ -122,3 +123,61 @@ export const search = async (filter: String): Promise<any> => {
         .catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
 }
 
+export const editContact = async (id: string, contact: IContact) => {
+    const isEmailExist = await ProfileModel.findOne({ 'contact.email': contact.email })
+    if (isEmailExist && isEmailExist.id != id) throw new ErrorHandler(`L'adresse email est déja utilisé par un autre profile`, 401, new Error())
+    else {
+        const profile = await ProfileModel.findById(id)
+        if (profile) {
+            if (profile.profileType != 'user') {
+                profile.contact = contact
+                await profile.save()
+                    .catch((error) => {
+                        if (error.code === 11000 || error.code === 11001) throw new ErrorHandler("Le mail est déjà utilisé par un autre profil", 401, error)
+                        else throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)
+                    })
+            } else throw new ErrorHandler(`Les profiles utilisateurs n'ont pas de contact`, 401, new Error())
+        } else throw new ErrorHandler(`Le profil que vous voulez modifier n'existe pas`, 404, new Error())
+    }
+}
+export const editCategories = async (id: string, categories: string) => {
+    const profile = await ProfileModel.findById(id)
+    if (profile) {
+        if (profile.profileType != 'user') {
+            profile.categories = categories
+            await profile.save()
+                .catch((error) => {
+                    if (error.code === 11000 || error.code === 11001) throw new ErrorHandler("Le nom   est déjà utilisé par un autre profil", 401, error)
+                    else throw new ErrorHandler("Erreur de connexion à la base de donnée. Nous y travaillons!", 500, error)
+                })
+        } else throw new ErrorHandler(`Les profiles utilisateurs n'ont pas de categories`, 401, new Error())
+    } else throw new ErrorHandler(`Le profil que vous voulez modifier n'existe pas`, 404, new Error())
+}
+
+export const createProfile = async (ownerId: string, profile: ICreateProfile): Promise<IProfile> => {
+    try {
+        const isEmailExist = await ProfileModel.exists({ 'contact.email': profile.contact.email })
+        if (isEmailExist) throw new ErrorHandler(`L'adresse email est déja utilisé par un autre profile`, 401, new Error())
+        else {
+            if (profile.name.length > 2) {
+                if (profile.profileType == 'association' || profile.profileType == 'entreprise') {
+                    const owner = await ProfileModel.findById(ownerId)
+                    if (owner) {
+                        profile.admins = [ownerId]
+                        const newProfile = await new ProfileModel(profile).save().catch((error) => {
+                            if (error.code == 11000) throw new ErrorHandler(`Le nom est déja utilisé par un autre profile`, 401, new Error())
+                            throw new ErrorHandler(`Erreur du serveur, nous y travaillons`, 500, error)
+                        })
+                        owner.administratedProfiles.push(newProfile.id)
+                        await owner.save().catch((error) => { throw new ErrorHandler(`Erreur du serveur, nous y travaillons`, 500, error) })
+                        return newProfile
+                    } else throw new ErrorHandler(`Il n'y a aucun compte sous l'identifiant ${ownerId}`, 401, new Error())
+
+                } else throw new ErrorHandler(`Vous devez uniquement crée une association ou une entreprise et non ${profile.profileType}`, 403, new Error())
+            } else throw new ErrorHandler('Vous devez fournir un nom de plus de 2 lettres', 403, new Error())
+        }
+    } catch (error) {
+        if (error instanceof ErrorHandler) throw error
+        else throw new ErrorHandler(`Erreur du serveur, nous y travaillons`, 500, error)
+    }
+}

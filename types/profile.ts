@@ -30,3 +30,31 @@ export interface IContact {
     website: string,
     email: string
 }
+
+export interface ICreateProfile {
+    name: string,
+    description: string,
+    categories: string,
+    profileType: string,
+    localisation: {
+        address: {
+            value: string,
+            isPublic: boolean,
+        },
+        country: {
+            value: string,
+            isPublic: boolean,
+        },
+        coordonates: {
+            longitude: Number,
+            latitude: Number,
+            isPublic: boolean
+        }
+    },
+    contact: {
+        phone: string,
+        website: string,
+        email: string
+    },
+    admins?: string[]
+}

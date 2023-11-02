@@ -23,7 +23,7 @@
             }
         }
     },
-    "/profile/": {
+    "/profile": {
         "get": {
             "tags": [
                 "profile"
@@ -187,7 +187,7 @@
             }
         }
     },
-    "/profile/image/": {
+    "/profile/image": {
         "patch": {
             "tags": [
                 "profile"
@@ -221,7 +221,7 @@
             }
         }
     },
-    "/profile/general/": {
+    "/profile/general": {
         "patch": {
             "tags": [
                 "profile"
@@ -266,7 +266,7 @@
             }
         }
     },
-    "/profile/password/": {
+    "/profile/password": {
         "patch": {
             "tags": [
                 "profile"
@@ -378,6 +378,205 @@
             "responses": {
                 "200": {
                     "description": "coordonées mis à jour"
+                }
+            }
+        }
+    },
+    "/profile/contact": {
+        "patch": {
+            "tags": [
+                "profile"
+            ],
+            "summary": "Modifier les contact de l'association ou de la page",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Identifiant du profile",
+                                    "example": "65427cc04553b97e16c74f27"
+                                },
+                                "phone": {
+                                    "type": "string",
+                                    "description": "Numéro de téléphone",
+                                    "example": "+261386231963"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "Le mail",
+                                    "example": "example@gmail.com"
+                                },
+                                "website": {
+                                    "type": "string",
+                                    "description": "Le site web de l'association ou de l'entreprise",
+                                    "example": "www.teratany.org"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Contacts modifiés"
+                }
+            }
+        }
+    },
+    "/profile/categories": {
+        "patch": {
+            "tags": [
+                "profile"
+            ],
+            "summary": "Modifier les categories d'une entreprise ou d'une association",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "categories": {
+                                    "type": "string",
+                                    "description": "Nouvelles categories",
+                                    "example": "abdf"
+                                },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Id du profil"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Categories mis à jour"
+                }
+            }
+        }
+    },
+    "/profile/create": {
+        "post": {
+            "tags": [
+                "profile"
+            ],
+            "summary": "Creation d'entreprise ou d'association",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Nom de l'entreprise ou de l'association",
+                                    "example": "Teratany MG"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description de l'entreprise ou de l'association",
+                                    "example": "Cet entreprise est incroyable"
+                                },
+                                "profileType": {
+                                    "type": "string",
+                                    "description": "Le tyoe de profile (entreprise ou association)",
+                                    "example": "entreprise"
+                                },
+                                "categories": {
+                                    "type": "string",
+                                    "description": "Nouvelles categories",
+                                    "example": "abdf"
+                                },
+                                "localisation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "type": "object",
+                                            "properties": {
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "L'adresse de du profile",
+                                                    "example": "Ambohimangakely, Antananarivo"
+                                                },
+                                                "isPublic": {
+                                                    "type": "boolean",
+                                                    "description": "Est-ce que l'adresse de du profile est privée",
+                                                    "example": true
+                                                }
+                                            }
+                                        },
+                                        "country": {
+                                            "type": "object",
+                                            "properties": {
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "Le pays de du profile",
+                                                    "example": "Madagascar"
+                                                },
+                                                "isPublic": {
+                                                    "type": "boolean",
+                                                    "description": "Est-ce que le pays de du profile est privée",
+                                                    "example": true
+                                                }
+                                            }
+                                        },
+                                        "coordonates": {
+                                            "type": "object",
+                                            "properties": {
+                                                "latitude": {
+                                                    "type": "number",
+                                                    "description": "La longitude de la position de du profile",
+                                                    "example": "18.456765"
+                                                },
+                                                "longitude": {
+                                                    "type": "number",
+                                                    "description": "La longitude de la position de du profile",
+                                                    "example": "25.98908"
+                                                },
+                                                "isPublic": {
+                                                    "type": "boolean",
+                                                    "description": "Est-ce que la position géographique de du profile est privée",
+                                                    "example": true
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "contact": {
+                                    "type": "object",
+                                    "properties": {
+                                        "phone": {
+                                            "type": "string",
+                                            "description": "Numéro de téléphone",
+                                            "example": "+261386231963"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "description": "Le mail",
+                                            "example": "example@gmail.com"
+                                        },
+                                        "website": {
+                                            "type": "string",
+                                            "description": "Le site web de l'association ou de l'entreprise",
+                                            "example": "www.teratany.org"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Profile créé"
                 }
             }
         }
