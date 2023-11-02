@@ -1,16 +1,17 @@
 {
     "tags": [
         {
-            "name": "authentication",
-            "description": "API d'authentification Teratany"
+            "name": "authentication"
         },
         {
             "name": "file",
             "description": "Interagir avec le serveur de fichier"
         },
         {
-            "name": "profile",
-            "description": "API d'utilisateur Teratany"
+            "name": "profile"
+        },
+        {
+            "name": "publication"
         }
     ],
     "openapi": "3.0.0",

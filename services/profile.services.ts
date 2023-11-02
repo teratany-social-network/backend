@@ -1,3 +1,4 @@
+import mongoose, { Types } from "mongoose"
 import { IProfile, ProfileModel } from "../models/profile.model"
 import { TSendEmail } from "../types/TAuthentication"
 import { IContact, ICreateProfile, ILocalisation } from "../types/profile"
@@ -11,16 +12,58 @@ const profileGetMask = {
     password: 0,
     newNotificationCount: 0,
     confirmation: 0,
-    notifications: 0,
-    reaction: 0
+    notifications: 0
 }
 
-export const getProfileById = async (id: string): Promise<IProfile> => {
-    const profile = await (await ProfileModel.findById(id, profileGetMask)).populate('administratedProfiles admins')
-        .catch((error) => { throw new ErrorHandler(`${id} n'est pas un identifiant de profile valide`, 403, error) })
-    if (!profile) throw new ErrorHandler(`Il n'y a pas de profil avec l'id: ${id}`, 404, new Error())
-    return profile.toObject()
-}
+export const getProfileById = async (id: string): Promise<IProfile[]> => {
+    try {
+        console.log(id);
+
+        const profile = await ProfileModel.aggregate([
+            {
+                $match: { _id: new mongoose.Types.ObjectId(id) },
+            },
+            {
+                $lookup: {
+                    from: 'profiles',
+                    localField: 'administratedProfiles',
+                    foreignField: '_id',
+                    as: 'administratedProfiles',
+                },
+            },
+            {
+                $addFields: {
+                    administratedProfiles: {
+                        $map: {
+                            input: '$administratedProfiles',
+                            as: 'adminProfile',
+                            in: {
+                                name: '$$adminProfile.name',
+                                image: '$$adminProfile.image',
+                                numberOfFollowers: { $size: '$followers' },
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    password: 0,
+                    newNotificationCount: 0,
+                    confirmation: 0,
+                    notifications: 0,
+                    reaction: 0,
+                },
+            },
+        ]);
+
+
+        return profile;
+    } catch (error) {
+        throw new ErrorHandler(`${id} n'est pas un identifiant de profil valide`, 403, error);
+    }
+};
+
 
 export const getProfileByName = async (name: string): Promise<IProfile> => {
     const profile = await ProfileModel.findOne({ name }, profileGetMask).populate('administratedProfiles admins')

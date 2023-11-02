@@ -1,18 +1,18 @@
 import mongoose, { Types, Schema } from 'mongoose';
 export interface IPub {
-    publicator: Types.ObjectId,
+    profile: Types.ObjectId,
     content: string,
     images: Array<string>,
     date?: Date,
     reactions?: Array<Types.ObjectId>,
-    commentaires?: Array<Types.ObjectId>,
+    comments?: Array<Types.ObjectId>,
 }
 
 
 const PublicationSchema: Schema = new Schema<IPub>({
-    publicator: {
+    profile: {
         type: Schema.Types.ObjectId,
-        ref: 'publicators'
+        ref: 'profiles'
     },
     content: String,
     images: [{
@@ -22,9 +22,9 @@ const PublicationSchema: Schema = new Schema<IPub>({
         type: Date,
         default: Date.now
     },
-    commentaires: [{
+    comments: [{
         type: Schema.Types.ObjectId,
-        ref: 'commentaires'
+        ref: 'comments'
     }],
     reactions: [{
         type: Schema.Types.ObjectId,

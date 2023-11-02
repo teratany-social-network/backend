@@ -2,14 +2,14 @@ import { Schema, model } from "mongoose";
 
 
 export interface IComment {
-    user: Schema.Types.ObjectId,
+    profile: Schema.Types.ObjectId,
     content: string,
     date: Date
 }
-const CommentaireSchema = new Schema<IComment>({
-    user: {
+const CommentSchema = new Schema<IComment>({
+    profile: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'profiles'
     },
     content: {
         type: String,
@@ -21,6 +21,4 @@ const CommentaireSchema = new Schema<IComment>({
     },
 })
 
-const CommentaireModel = model('commentaire', CommentaireSchema)
-
-module.exports = { CommentaireModel }
+export const CommentModel = model('comments', CommentSchema)
