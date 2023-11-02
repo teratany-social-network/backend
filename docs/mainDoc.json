@@ -11,10 +11,6 @@
         {
             "name": "profile",
             "description": "API d'utilisateur Teratany"
-        },
-        {
-            "name": "pages",
-            "description": "Les pages (associations et entreprises)"
         }
     ],
     "openapi": "3.0.0",
