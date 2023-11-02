@@ -16,14 +16,14 @@ const profileGetMask = {
 }
 
 export const getProfileById = async (id: string): Promise<IProfile> => {
-    const profile = await ProfileModel.findById(id, profileGetMask)
+    const profile = await (await ProfileModel.findById(id, profileGetMask)).populate('administratedProfiles admins')
         .catch((error) => { throw new ErrorHandler(`${id} n'est pas un identifiant de profile valide`, 403, error) })
     if (!profile) throw new ErrorHandler(`Il n'y a pas de profil avec l'id: ${id}`, 404, new Error())
     return profile.toObject()
 }
 
 export const getProfileByName = async (name: string): Promise<IProfile> => {
-    const profile = await ProfileModel.findOne({ name }, profileGetMask)
+    const profile = await ProfileModel.findOne({ name }, profileGetMask).populate('administratedProfiles admins')
         .catch((error) => { throw new ErrorHandler(`Une erreur s'est produite lors de la recherche du profil`, 500, error) })
     if (!profile) throw new ErrorHandler((`Il n'y a pas de profil nommé: ${name}`), 404, new Error('Profil introuvable'))
     return profile.toObject()
@@ -118,7 +118,7 @@ export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
 }
 
 export const search = async (filter: String): Promise<any> => {
-    return await ProfileModel.find({ name: { $regex: filter, $options: "i" } }, profileGetMask)
+    return await ProfileModel.find({ name: { $regex: filter, $options: "i" } }, profileGetMask).populate('administratedProfiles admins')
         .then((result) => { return result })
         .catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
 }
