@@ -10,7 +10,6 @@ import swaggerUi from 'swagger-ui-express'
 import statusMonitor from 'express-status-monitor'
 import { AuthRouter } from "./routes/auth.routes"
 import { ProfileRouter } from "./routes/profile.routes"
-import { PageRouter } from "./routes/page.routes"
 import { SwaggerTheme } from "swagger-themes"
 import { FileRouter } from "./routes/file.routes"
 import { swaggerDoc } from "./docs/swaggerDoc"
@@ -59,7 +58,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/authentication', AuthRouter)
 app.use('/profile', ProfileRouter)
 app.use('/upload', FileRouter)
-app.use('/pages', PageRouter)
 
 app.use("/public", express.static(path.join(__dirname, "/public")))
 app.listen(PORT, () => {
