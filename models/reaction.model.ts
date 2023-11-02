@@ -1,15 +1,15 @@
 import { Schema, model } from "mongoose"
 
 export interface IReaction {
-    user: Schema.Types.ObjectId,
+    profile: Schema.Types.ObjectId,
     reaction: string,
     date: Date
 }
 
 const ReactionSchema = new Schema<IReaction>({
-    user: {
+    profile: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'profiles'
     },
     reaction: {
         type: String,
@@ -20,4 +20,4 @@ const ReactionSchema = new Schema<IReaction>({
     }
 })
 
-export const ReactionModel = model('reaction', ReactionSchema);
+export const ReactionModel = model('reactions', ReactionSchema);
