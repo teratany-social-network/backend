@@ -9,7 +9,7 @@ import { IContact, ICreateProfile, ILocalisation } from "../types/profile"
 export const getProfileByIdController = async (req: Request, res: Response) => {
     const { id } = req.params
     await getProfileById(id?.toString() || "")
-        .then((profile: IProfile) => res.send(profile))
+        .then((profile: IProfile[]) => res.send(profile))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 export const getProfileByNameController = async (req: Request, res: Response) => {
