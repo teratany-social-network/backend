@@ -44,7 +44,7 @@ const profileSchema = new Schema<IProfile>({
     localisation: {
         address: {
             value: { type: String, default: '' },
-            isPublic: { type: Boolean, default: true, unique: true },
+            isPublic: { type: Boolean, default: true },
         },
         country: {
             value: { type: String, default: '' },
@@ -59,7 +59,7 @@ const profileSchema = new Schema<IProfile>({
     contact: {
         phone: { type: String, default: '' },
         website: { type: String, default: '' },
-        email: { type: String, default: '' }
+        email: { type: String, default: '', unique: true }
     },
     administratedProfiles: [{
         type: Types.ObjectId,
