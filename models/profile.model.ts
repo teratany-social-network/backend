@@ -43,8 +43,8 @@ const profileSchema = new Schema<IProfile>({
     },
     localisation: {
         address: {
-            value: { type: String, default: '' },
-            isPublic: { type: Boolean, default: true, unique: true },
+            value: { type: String, default: '', unique: true },
+            isPublic: { type: Boolean, default: true },
         },
         country: {
             value: { type: String, default: '' },
