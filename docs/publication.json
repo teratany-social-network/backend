@@ -1,0 +1,111 @@
+{
+    "/publication/": {
+        "post": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "publier",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "profile": {
+                                    "type": "string",
+                                    "description": "Identifiant du profil qui publie",
+                                    "example": "654338524978a11a1729ca1d"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "Contenu textuel de la publication",
+                                    "example": "Voici un post incroyable"
+                                },
+                                "images": {
+                                    "type": "array",
+                                    "description": "Liste des url des photos rattachées à la publication",
+                                    "example": [
+                                        "image1",
+                                        "image2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    },
+    "/publication/byProfile": {
+        "get": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "Avoir les publications d'un profil",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "profileId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Identifiant du profil dont on get les publications",
+                    "example": "65427cc04553b97e16c74f27"
+                },
+                {
+                    "in": "query",
+                    "name": "ownId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Identifiant du profil qui get (principalement utilisé pour verifier le status de reaction du profile)",
+                    "example": "65427cc04553b97e16c74f27"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    },
+    "/publication/one": {
+        "get": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "Avoir les publications d'un profil",
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "publicationId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Identifiant de la publication publications",
+                    "example": "65440653989e8cc936bfea26"
+                },
+                {
+                    "in": "query",
+                    "name": "ownId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Identifiant du profil qui get (principalement utilisé pour verifier le status de reaction du profile)",
+                    "example": "65427cc04553b97e16c74f27"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    }
+}

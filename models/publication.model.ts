@@ -28,7 +28,7 @@ const PublicationSchema: Schema = new Schema<IPub>({
     }],
     reactions: [{
         type: Schema.Types.ObjectId,
-        ref: 'reactions'
+        ref: 'profiles'
     }]
 })
 

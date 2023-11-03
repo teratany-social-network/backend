@@ -13,6 +13,7 @@ import { ProfileRouter } from "./routes/profile.routes"
 import { SwaggerTheme } from "swagger-themes"
 import { FileRouter } from "./routes/file.routes"
 import { swaggerDoc } from "./docs/swaggerDoc"
+import { PublicationRouter } from "./routes/publication.routes"
 
 dotenv.config()
 const app = express()
@@ -58,6 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/authentication', AuthRouter)
 app.use('/profile', ProfileRouter)
 app.use('/upload', FileRouter)
+app.use('/publication', PublicationRouter)
 
 app.use("/public", express.static(path.join(__dirname, "/public")))
 app.listen(PORT, () => {

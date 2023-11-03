@@ -17,9 +17,7 @@ const profileGetMask = {
 
 export const getProfileById = async (id: string): Promise<IProfile[]> => {
     try {
-        console.log(id);
-
-        const profile = await ProfileModel.aggregate([
+        return await ProfileModel.aggregate([
             {
                 $match: { _id: new mongoose.Types.ObjectId(id) },
             },
@@ -44,6 +42,23 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                             },
                         },
                     },
+
+                },
+            },
+            {
+                $addFields: {
+                    admins: {
+                        $map: {
+                            input: '$admins',
+                            as: 'adminProfile',
+                            in: {
+                                name: '$$adminProfile.name',
+                                image: '$$adminProfile.image',
+                                numberOfFollowers: { $size: '$followers' },
+                            },
+                        },
+                    },
+
                 },
             },
             {
@@ -55,10 +70,7 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                     reaction: 0,
                 },
             },
-        ]);
-
-
-        return profile;
+        ])
     } catch (error) {
         throw new ErrorHandler(`${id} n'est pas un identifiant de profil valide`, 403, error);
     }
