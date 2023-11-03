@@ -109,6 +109,8 @@ export const editPassword = async (id: string, password: string, newPassword: st
 
 export const editProfileGeneral = async (id: string, name: string, description: string, email: string) => {
     return await ProfileModel.findById(id).then(async (profile) => {
+
+
         if (profile) {
             profile.name = name
             profile.description = description
@@ -210,6 +212,7 @@ export const editCategories = async (id: string, categories: string) => {
 }
 
 export const createProfile = async (ownerId: string, profile: ICreateProfile): Promise<IProfile> => {
+
     try {
         const isEmailExist = await ProfileModel.exists({ 'contact.email': profile.contact.email })
         if (isEmailExist) throw new ErrorHandler(`L'adresse email est déja utilisé par un autre profile`, 401, new Error())
@@ -220,11 +223,14 @@ export const createProfile = async (ownerId: string, profile: ICreateProfile): P
                     if (owner) {
                         profile.admins = [ownerId]
                         const newProfile = await new ProfileModel(profile).save().catch((error) => {
+
                             if (error.code == 11000) throw new ErrorHandler(`Le nom est déja utilisé par un autre profile`, 401, new Error())
                             throw new ErrorHandler(`Erreur du serveur, nous y travaillons`, 500, error)
                         })
-                        owner.administratedProfiles.push(newProfile.id)
+
+                        owner.administratedProfiles.push(newProfile._id)
                         await owner.save().catch((error) => { throw new ErrorHandler(`Erreur du serveur, nous y travaillons`, 500, error) })
+
                         return newProfile
                     } else throw new ErrorHandler(`Il n'y a aucun compte sous l'identifiant ${ownerId}`, 401, new Error())
 
