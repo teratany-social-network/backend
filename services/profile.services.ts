@@ -17,7 +17,6 @@ const profileGetMask = {
 
 export const getProfileById = async (id: string): Promise<IProfile[]> => {
     try {
-        console.log(id);
 
         const profile = await ProfileModel.aggregate([
             {
@@ -38,6 +37,7 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                             input: '$administratedProfiles',
                             as: 'adminProfile',
                             in: {
+                                id: '$$adminProfile._id',
                                 name: '$$adminProfile.name',
                                 image: '$$adminProfile.image',
                                 numberOfFollowers: { $size: '$followers' },
@@ -58,7 +58,7 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
         ]);
 
 
-        return profile;
+        return profile[0];
     } catch (error) {
         throw new ErrorHandler(`${id} n'est pas un identifiant de profil valide`, 403, error);
     }
