@@ -40,6 +40,67 @@
                     "description": "ok"
                 }
             }
+        },
+        "patch": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "modifier la publication",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "publicationId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la publication",
+                                    "example": "65440653989e8cc936bfea26"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "Nouveau contenu textuel de la publication",
+                                    "example": "Voici un post super incroyable"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        },
+        "delete": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "supprimer la publication",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "publicationId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la publication",
+                                    "example": "6544065d989e8cc936bfea2a"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
         }
     },
     "/publication/byProfile": {

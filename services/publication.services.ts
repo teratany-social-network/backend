@@ -230,7 +230,7 @@ export const removeComment = async (commentId: string) => {
     await CommentModel.findByIdAndDelete(commentId).catch((error) => { throw new ErrorHandler(`Erreur côté serveur, nous y travaillons`, 500, error) })
 }
 export const removePublication = async (publicationId: string) => {
-    await CommentModel.findByIdAndDelete(publicationId).catch((error) => { throw new ErrorHandler(`Erreur côté serveur, nous y travaillons`, 500, error) })
+    await PublicationModel.findByIdAndDelete(publicationId).catch((error) => { throw new ErrorHandler(`Erreur côté serveur, nous y travaillons`, 500, error) })
 }
 
 export const toggleReaction = async (publicationId: string, profileId: string) => {
