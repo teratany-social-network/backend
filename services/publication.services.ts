@@ -235,7 +235,7 @@ export const removePublication = async (publicationId: string) => {
 
 export const toggleReaction = async (publicationId: string, profileId: string) => {
     try {
-        const publication = await PublicationModel.findOne({ _id: publicationId })
+        const publication = await PublicationModel.findById(publicationId)
         if (publication) {
             const index = publication.reactions.indexOf(profileId)
             if (index === -1) publication.reactions.push(profileId)

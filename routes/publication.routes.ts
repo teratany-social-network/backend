@@ -15,5 +15,4 @@ PublicationRouter.get('/one', authenticateToken, (req, res) => getOnePublication
 PublicationRouter.patch('/', authenticateToken, (req, res) => updatePublicationController(req, res))
 PublicationRouter.delete('/', authenticateToken, (req, res) => removePublicationController(req, res))
 
-
 export { PublicationRouter }

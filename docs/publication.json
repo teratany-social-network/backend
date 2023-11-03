@@ -168,5 +168,40 @@
                 }
             }
         }
+    },
+    "/publication/reaction/toggle": {
+        "post": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "reagir ou retirer la reaction sur une publication",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "profileId": {
+                                    "type": "string",
+                                    "description": "Identifiant du profil qui publie",
+                                    "example": "65427cc04553b97e16c74f27"
+                                },
+                                "publicationId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la publication",
+                                    "example": "65440653989e8cc936bfea26"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
     }
 }
