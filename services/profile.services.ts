@@ -44,6 +44,23 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                             },
                         },
                     },
+
+                },
+            },
+            {
+                $addFields: {
+                    admins: {
+                        $map: {
+                            input: '$admins',
+                            as: 'adminProfile',
+                            in: {
+                                name: '$$adminProfile.name',
+                                image: '$$adminProfile.image',
+                                numberOfFollowers: { $size: '$followers' },
+                            },
+                        },
+                    },
+
                 },
             },
             {
