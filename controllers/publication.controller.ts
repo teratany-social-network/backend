@@ -51,7 +51,7 @@ export const removePublicationController = async (req: Request, res: Response) =
 
 export const toggleReactionController = async (req: Request, res: Response) => {
     const { profileId, publicationId } = req.body
-    await toggleReaction(profileId, publicationId)
+    await toggleReaction(publicationId, profileId)
         .then(() => res.send('ok'))
         .catch((error) => res.status(error.code).send(error))
 }
