@@ -43,7 +43,7 @@ export const removeCommentController = async (req: Request, res: Response) => {
 }
 
 export const removePublicationController = async (req: Request, res: Response) => {
-    const { publicationId } = req.body
+    const { publicationId } = req.params
     await removePublication(publicationId)
         .then(() => res.send('ok'))
         .catch((error) => res.status(error.code).send(error))

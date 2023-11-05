@@ -13,6 +13,6 @@ PublicationRouter.post('/', authenticateToken, (req, res) => createPublicationCo
 PublicationRouter.get('/byProfile', authenticateToken, (req, res) => getProfilePublicationController(req, res))
 PublicationRouter.get('/one', authenticateToken, (req, res) => getOnePublicationController(req, res))
 PublicationRouter.patch('/', authenticateToken, (req, res) => updatePublicationController(req, res))
-PublicationRouter.delete('/', authenticateToken, (req, res) => removePublicationController(req, res))
+PublicationRouter.delete('/:publicationId', authenticateToken, (req, res) => removePublicationController(req, res))
 
 export { PublicationRouter }

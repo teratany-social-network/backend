@@ -73,34 +73,6 @@
                     "description": "ok"
                 }
             }
-        },
-        "delete": {
-            "tags": [
-                "publication"
-            ],
-            "summary": "supprimer la publication",
-            "requestBody": {
-                "required": true,
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "publicationId": {
-                                    "type": "string",
-                                    "description": "Identifiant de la publication",
-                                    "example": "6544065d989e8cc936bfea2a"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "responses": {
-                "200": {
-                    "description": "ok"
-                }
-            }
         }
     },
     "/publication/byProfile": {
@@ -197,6 +169,30 @@
                     }
                 }
             },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    },
+    "/publication/{id}": {
+        "delete": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "Supprimer une publication",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "publicationId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant à de la publication",
+                    "example": "6544065d989e8cc936bfea2a"
+                }
+            ],
             "responses": {
                 "200": {
                     "description": "ok"
