@@ -144,7 +144,7 @@
     "/publication/reaction/toggle": {
         "post": {
             "tags": [
-                "publication"
+                "reactions"
             ],
             "summary": "reagir ou retirer la reaction sur une publication",
             "requestBody": {
@@ -185,11 +185,122 @@
             "parameters": [
                 {
                     "in": "path",
-                    "name": "publicationId",
+                    "name": "id",
                     "schema": {
                         "type": "string"
                     },
                     "description": "L'identifiant à de la publication",
+                    "example": "6544065d989e8cc936bfea2a"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    },
+    "/publication/comment": {
+        "post": {
+            "tags": [
+                "commentaires"
+            ],
+            "summary": "Laisser un commentaire",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "profileId": {
+                                    "type": "string",
+                                    "description": "Identifiant du profil qui commente",
+                                    "example": "654338524978a11a1729ca1d"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "Contenu textuel du commentaire",
+                                    "example": "Voici un commentaire incroyable"
+                                },
+                                "publicationId": {
+                                    "type": "string",
+                                    "description": "Identifiant de la publication a commenter",
+                                    "example": "654338524978a11a1729ca1d"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+        
+    },
+    "/publication/comments/{id}": {
+        "delete": {
+            "tags": [
+                "commentaires"
+            ],
+            "summary": "Supprimer un commentaire",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant du commentaire",
+                    "example": "6544065d989e8cc936bfea2a"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        },
+        "get": {
+            "tags": [
+                "commentaires"
+            ],
+            "summary": "Voir les commentaires d'une publication",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant de la publication",
+                    "example": "6544065d989e8cc936bfea2a"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    },
+    "/publication/reactions/{id}": {
+        "get": {
+            "tags": [
+                "reactions"
+            ],
+            "summary": "Voir les reactions d'une publication",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant de la publication",
                     "example": "6544065d989e8cc936bfea2a"
                 }
             ],

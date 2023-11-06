@@ -13,6 +13,12 @@
         {
             "name": "publication",
             "description": "Publications, reactions, comments API"
+        },
+        {
+            "name": "commentaires"
+        },
+        {
+            "name": "reactions"
         }
     ],
     "openapi": "3.0.0",

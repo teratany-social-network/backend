@@ -1,7 +1,9 @@
 import { Schema, model } from "mongoose";
+import { PublicationModel } from "./publication.model";
 
 
 export interface IComment {
+    _id?: Schema.Types.ObjectId,
     profile: Schema.Types.ObjectId,
     content: string,
     date: Date
@@ -20,5 +22,7 @@ const CommentSchema = new Schema<IComment>({
         default: Date.now
     },
 })
+
+
 
 export const CommentModel = model('comments', CommentSchema)

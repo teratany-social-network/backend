@@ -48,46 +48,12 @@ export const getProfilePublication = async (profileId: string, ownId: string): P
                 $unwind: '$profile'
             },
             {
-                $lookup: {
-                    from: 'comments',
-                    localField: 'comments',
-                    foreignField: '_id',
-                    as: 'comments'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$comments',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: 'profiles',
-                    localField: 'comments.profile',
-                    foreignField: '_id',
-                    as: 'comments.profile'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$comments.profile',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: 'profiles',
-                    localField: 'reactions',
-                    foreignField: '_id',
-                    as: 'reactions'
-                }
-            },
-            {
                 $addFields: {
                     isReacted: {
                         $in: [new Types.ObjectId(ownId), '$reactions._id']
-                    }
+                    },
+                    numberOfComments: { $size: '$comments' },
+                    numberOfReactions: { $size: '$reactions' },
                 }
             },
             {
@@ -97,17 +63,12 @@ export const getProfilePublication = async (profileId: string, ownId: string): P
                     'date': 1,
                     'content': 1,
                     'isReacted': 1,
+                    'numberOfComments': 1,
+                    'numberOfReactions': 1,
                     'profile._id': 1,
                     'profile.name': 1,
                     'profile.image': 1,
-                    'profile.profileType': 1,
-                    'comments.profile._id': 1,
-                    'comments.profile.name': 1,
-                    'comments.profile.image': 1,
-                    'comments.profile.profileType': 1,
-                    'reactions._id': 1,
-                    'reactions.name': 1,
-                    'reactions.profileType': 1,
+                    'profile.profileType': 1
                 }
             }
         ]);
@@ -134,47 +95,14 @@ export const getOnePublication = async (publicationId: string, ownId: string): P
             {
                 $unwind: '$profile'
             },
-            {
-                $lookup: {
-                    from: 'comments',
-                    localField: 'comments',
-                    foreignField: '_id',
-                    as: 'comments'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$comments',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: 'profiles',
-                    localField: 'comments.profile',
-                    foreignField: '_id',
-                    as: 'comments.profile'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$comments.profile',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: 'profiles',
-                    localField: 'reactions',
-                    foreignField: '_id',
-                    as: 'reactions'
-                }
-            },
+
             {
                 $addFields: {
                     isReacted: {
                         $in: [new Types.ObjectId(ownId), '$reactions._id']
-                    }
+                    },
+                    numberOfComments: { $size: '$comments' },
+                    numberOfReactions: { $size: '$reactions' },
                 }
             },
             {
@@ -187,14 +115,8 @@ export const getOnePublication = async (publicationId: string, ownId: string): P
                     'profile._id': 1,
                     'profile.name': 1,
                     'profile.image': 1,
-                    'profile.profileType': 1,
-                    'comments.profile._id': 1,
-                    'comments.profile.name': 1,
-                    'comments.profile.image': 1,
-                    'comments.profile.profileType': 1,
-                    'reactions._id': 1,
-                    'reactions.name': 1,
-                    'reactions.profileType': 1,
+                    'numberOfComments': 1,
+                    'numberOfReactions': 1
                 }
             }
         ]);
@@ -248,3 +170,25 @@ export const toggleReaction = async (publicationId: string, profileId: string) =
     }
 }
 
+export const getComments = async (publicationId: string): Promise<any[]> => {
+    const publication = await PublicationModel.findById(publicationId)
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'profile',
+                select: '_id image name'
+            }
+        })
+    if (publication) return publication.comments
+    else throw new ErrorHandler(`La publication n'existe pas.`, 404, new Error)
+}
+
+export const getReactions = async (publicationId: string): Promise<any[]> => {
+    const publication = await PublicationModel.findById(publicationId)
+        .populate({
+            path: 'reactions',
+            select: '_id image name'
+        })
+    if (publication) return publication.reactions
+    else throw new ErrorHandler(`La publication n'existe pas.`, 404, new Error)
+}
