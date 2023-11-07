@@ -63,8 +63,12 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                         },
                     },
 
+                    isFollowed: {
+                        $in: [new Types.ObjectId(id), '$followers']
+                    },
                 },
             },
+
             {
                 $project: {
                     password: 0,
