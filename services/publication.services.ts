@@ -200,17 +200,32 @@ export const feed = async (ownId: string): Promise<any> => {
         { $unwind: '$followingPublications' },
         { $sort: { 'followingPublications.date': 1 } },
         {
+            $lookup: {
+                from: 'profiles',
+                localField: 'followingPublications.profile',
+                foreignField: '_id',
+                as: 'profileInfo',
+            },
+        },
+        {
             $project: {
-                _id: 0,
-                'followingPublications._id': 1,
-                'followingPublications.profile': 1,
-                'followingPublications.content': 1,
-                'followingPublications.images': 1,
-                'followingPublications.date': 1,
-                'followingPublications.comments': 1,
-                'followingPublications.reactions': 1,
-            }, // Projeter les champs souhaités
-        }
+                _id: 1,
+                publication: {
+                    _id: '$followingPublications._id',
+                    profile: { $arrayElemAt: ['$profileInfo', 0] }, // Obtenez la première occurrence de profilInfo comme profil
+                    content: '$followingPublications.content',
+                    images: '$followingPublications.images',
+                    date: '$followingPublications.date',
+                    comments: '$followingPublications.comments',
+                    reactions: '$followingPublications.reactions',
+                },
+            },
+        },
+        {
+            $replaceRoot: {
+                newRoot: '$publication',
+            },
+        },
     ]);
     return results
 }
