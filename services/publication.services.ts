@@ -198,7 +198,7 @@ export const feed = async (ownId: string): Promise<any> => {
         { $match: { _id: new Types.ObjectId(ownId) } },
         { $lookup: { from: 'publications', localField: 'following', foreignField: 'profile', as: 'followingPublications' } },
         { $unwind: '$followingPublications' },
-        { $sort: { 'followingPublications.date': -1 } },
+        { $sort: { 'followingPublications.date': 1 } },
         {
             $project: {
                 _id: 0,
