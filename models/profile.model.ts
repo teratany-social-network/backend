@@ -20,8 +20,8 @@ export interface IProfile {
     admins: ObjectId[],
     notifications: ObjectId[],
     publications: ObjectId[],
-    following: ObjectId[],
-    followers: ObjectId[],
+    following: string[],
+    followers: string[],
     role: number
 }
 

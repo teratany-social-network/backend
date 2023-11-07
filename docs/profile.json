@@ -580,5 +580,38 @@
                 }
             }
         }
+    },
+    "/profile/follow": {
+        "post": {
+            "tags": [
+                "profile"
+            ],
+            "summary": "S'abonner ou se desabonner à quelqu'un",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "currentProfileId": {
+                                    "type": "string",
+                                    "description": "L'identifiant du profile qui va faire l'action"
+                                },
+                                "toFollowId": {
+                                    "type": "string",
+                                    "description": "L'identifiant du profile à abonner ou à desabonner"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok de profil modifié"
+                }
+            }
+        }
     }
 }

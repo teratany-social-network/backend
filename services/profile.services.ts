@@ -79,8 +79,7 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
     } catch (error) {
         throw new ErrorHandler(`${id} n'est pas un identifiant de profil valide`, 403, error);
     }
-};
-
+}
 
 export const getProfileByName = async (name: string): Promise<IProfile> => {
     const profile = await ProfileModel.findOne({ name }, profileGetMask).populate('administratedProfiles admins')
@@ -137,7 +136,6 @@ export const editLocalisation = async (id: string, localisation: ILocalisation) 
         }
     })
 }
-
 
 export const getProfileByToken = async (authorization: string): Promise<IProfile> => {
     let id: String
@@ -202,6 +200,7 @@ export const editContact = async (id: string, contact: IContact) => {
         } else throw new ErrorHandler(`Le profil que vous voulez modifier n'existe pas`, 404, new Error())
     }
 }
+
 export const editCategories = async (id: string, categories: string) => {
     const profile = await ProfileModel.findById(id)
     if (profile) {
@@ -246,4 +245,22 @@ export const createProfile = async (ownerId: string, profile: ICreateProfile): P
         if (error instanceof ErrorHandler) throw error
         else throw new ErrorHandler(`Erreur du serveur, nous y travaillons`, 500, error)
     }
+}
+
+export const toggleFollow = async (currentProfileId: string, toFollowId: string) => {
+    const currentProfile = await ProfileModel.findById(currentProfileId)
+    const toFollow = await ProfileModel.findById(toFollowId)
+    if (currentProfile && toFollow) {
+        let index = currentProfile.following.indexOf(toFollowId)
+        if (index === -1) {
+            currentProfile.following.push(toFollowId)
+            toFollow.followers.push(currentProfileId)
+        } else {
+            currentProfile.following.splice(index, 1)
+            index = toFollow.following.indexOf(currentProfileId)
+            toFollow.followers.splice(index, 1)
+        }
+        await currentProfile.save()
+        await toFollow.save()
+    } else throw new ErrorHandler(`Vous essayez de suivre un profile qui n'existe pas`, 404, new Error)
 }

@@ -31,8 +31,6 @@ export const getProfilePublication_ = async (profileId: String, ownId: string): 
 }
 
 export const getProfilePublication = async (profileId: string, ownId: string): Promise<IPub[]> => {
-    console.log(profileId, `   `, ownId);
-
     try {
         return await PublicationModel.aggregate([
             {
