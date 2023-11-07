@@ -12,7 +12,8 @@ const profileGetMask = {
     password: 0,
     newNotificationCount: 0,
     confirmation: 0,
-    notifications: 0
+    notifications: 0,
+    isFollowed: 0
 }
 
 export const getProfileById = async (id: string): Promise<IProfile[]> => {
@@ -177,10 +178,32 @@ export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
     } else throw new ErrorHandler(`Il n'y a pas d'utilisateur sous le mail ${email}`, 404, new Error(`Il n'y a pas d'utilisateur sous le mail ${email}`))
 }
 
-export const search = async (filter: String): Promise<any> => {
-    return await ProfileModel.find({ name: { $regex: filter, $options: "i" } }, profileGetMask).populate('administratedProfiles admins')
-        .then((result) => { return result })
-        .catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
+export const search = async (filter: String, ownId: string): Promise<any> => {
+    console.log(filter);
+
+    const results = await ProfileModel.aggregate([
+        { $match: { name: { $regex: filter, $options: "i" } } },
+        {
+            $addFields: {
+                isFollowed: {
+                    $in: [new Types.ObjectId(ownId), '$followers']
+                },
+                numberOfFollowers: { $size: '$followers' },
+            }
+        },
+        {
+            $project: {
+                '_id': 1,
+                'name': 1,
+                'image': 1,
+                'profileType': 1,
+                'localisation.country': 1,
+                'isFollowed': 1,
+                'numberOfFollowers': 1,
+            }
+        }
+    ]).catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
+    return results
 }
 
 export const editContact = async (id: string, contact: IContact) => {

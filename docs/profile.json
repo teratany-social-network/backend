@@ -37,6 +37,13 @@
                     "schema": {
                         "type": "string"
                     }
+                },
+                {
+                    "in": "query",
+                    "name": "ownId",
+                    "schema": {
+                        "type": "string"
+                    }
                 }
             ],
             "responses": {
