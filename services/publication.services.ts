@@ -31,6 +31,8 @@ export const getProfilePublication_ = async (profileId: String, ownId: string): 
 }
 
 export const getProfilePublication = async (profileId: string, ownId: string): Promise<IPub[]> => {
+    console.log(profileId, `   `, ownId);
+
     try {
         return await PublicationModel.aggregate([
             {
@@ -50,7 +52,7 @@ export const getProfilePublication = async (profileId: string, ownId: string): P
             {
                 $addFields: {
                     isReacted: {
-                        $in: [new Types.ObjectId(ownId), '$reactions._id']
+                        $in: [new Types.ObjectId(ownId), '$reactions']
                     },
                     numberOfComments: { $size: '$comments' },
                     numberOfReactions: { $size: '$reactions' },
@@ -99,7 +101,7 @@ export const getOnePublication = async (publicationId: string, ownId: string): P
             {
                 $addFields: {
                     isReacted: {
-                        $in: [new Types.ObjectId(ownId), '$reactions._id']
+                        $in: [new Types.ObjectId(ownId), '$reactions']
                     },
                     numberOfComments: { $size: '$comments' },
                     numberOfReactions: { $size: '$reactions' },
