@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { authenticateToken } from "../middleware/authentificationToken"
-import { createPublicationController, getCommentsController, getOnePublicationController, getProfilePublicationController, getReactionsController, postCommentController, removeCommentController, removePublicationController, toggleReactionController, updatePublicationController } from "../controllers/publication.controller"
+import { createPublicationController, feedController, getCommentsController, getOnePublicationController, getProfilePublicationController, getReactionsController, postCommentController, removeCommentController, removePublicationController, toggleReactionController, updatePublicationController } from "../controllers/publication.controller"
 
 const PublicationRouter = Router()
 
@@ -16,5 +16,7 @@ PublicationRouter.delete('/comment', authenticateToken, (req, res) => removeComm
 
 PublicationRouter.get('/reactions/:publicationId', (req, res) => getReactionsController(req, res))
 PublicationRouter.post('/reaction/toggle', authenticateToken, (req, res) => toggleReactionController(req, res))
+
+PublicationRouter.get('/feed/:ownId', (req, res) => feedController(req, res))
 
 export { PublicationRouter }

@@ -310,5 +310,29 @@
                 }
             }
         }
+    },
+    "/publication/feed/{ownId}": {
+        "get": {
+            "tags": [
+                "publication"
+            ],
+            "summary": "Voir les  publication sur le feed",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "ownId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant du profil actif",
+                    "example": "6544065d989e8cc936bfea2a"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
     }
 }

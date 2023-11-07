@@ -7,6 +7,7 @@ import { generateToken } from "../utils/generateJwtToken"
 import { decodeAuthorization } from "../utils/jwtDecode"
 import { sendMail } from "../utils/nodemailer"
 import { sha } from "../utils/sha256"
+import { PublicationModel } from "../models/publication.model"
 
 const profileGetMask = {
     password: 0,
@@ -181,7 +182,7 @@ export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
 export const search = async (filter: String, ownId: string): Promise<any> => {
     console.log(filter);
 
-    const results = await ProfileModel.aggregate([
+    const profiles = await ProfileModel.aggregate([
         { $match: { name: { $regex: filter, $options: "i" } } },
         {
             $addFields: {
@@ -203,7 +204,48 @@ export const search = async (filter: String, ownId: string): Promise<any> => {
             }
         }
     ]).catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
-    return results
+
+    const publications = await PublicationModel.aggregate([
+        {
+            $match: { content: { $regex: filter, $options: "i" } }
+        },
+        {
+            $lookup: {
+                from: 'profiles',
+                localField: 'profile',
+                foreignField: '_id',
+                as: 'profile'
+            }
+        },
+        {
+            $unwind: '$profile'
+        },
+        {
+            $addFields: {
+                isReacted: {
+                    $in: [new Types.ObjectId(ownId), '$reactions']
+                },
+                numberOfComments: { $size: '$comments' },
+                numberOfReactions: { $size: '$reactions' },
+            }
+        },
+        {
+            $project: {
+                '_id': 1,
+                'images': 1,
+                'date': 1,
+                'content': 1,
+                'isReacted': 1,
+                'numberOfComments': 1,
+                'numberOfReactions': 1,
+                'profile._id': 1,
+                'profile.name': 1,
+                'profile.image': 1,
+                'profile.profileType': 1
+            }
+        }
+    ]).catch((error) => { throw new ErrorHandler(`Erreur de connexion à la base de donnée`, 500, error) })
+    return { profiles, publications }
 }
 
 export const editContact = async (id: string, contact: IContact) => {

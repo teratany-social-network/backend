@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPublication, getComments, getOnePublication, getProfilePublication, getReactions, postComment, removeComment, removePublication, toggleReaction, updatePublication } from "../services/publication.services";
+import { createPublication, feed, getComments, getOnePublication, getProfilePublication, getReactions, postComment, removeComment, removePublication, toggleReaction, updatePublication } from "../services/publication.services";
 
 export const createPublicationController = async (req: Request, res: Response) => {
     const { profile, content, images } = req.body
@@ -68,5 +68,12 @@ export const getReactionsController = async (req: Request, res: Response) => {
     const { publicationId } = req.params
     await getReactions(publicationId)
         .then((reactions) => res.send(reactions))
+        .catch((error) => res.status(error.code).send(error))
+}
+
+export const feedController = async (req: Request, res: Response) => {
+    const { ownId } = req.params
+    await feed(ownId)
+        .then((publications) => res.send(publications))
         .catch((error) => res.status(error.code).send(error))
 }

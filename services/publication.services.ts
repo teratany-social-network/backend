@@ -192,3 +192,25 @@ export const getReactions = async (publicationId: string): Promise<any[]> => {
     if (publication) return publication.reactions
     else throw new ErrorHandler(`La publication n'existe pas.`, 404, new Error)
 }
+
+export const feed = async (ownId: string): Promise<any> => {
+    const results = await ProfileModel.aggregate([
+        { $match: { _id: new Types.ObjectId(ownId) } },
+        { $lookup: { from: 'publications', localField: 'following', foreignField: 'profile', as: 'followingPublications' } },
+        { $unwind: '$followingPublications' },
+        { $sort: { 'followingPublications.date': -1 } },
+        {
+            $project: {
+                _id: 0,
+                'followingPublications._id': 1,
+                'followingPublications.profile': 1,
+                'followingPublications.content': 1,
+                'followingPublications.images': 1,
+                'followingPublications.date': 1,
+                'followingPublications.comments': 1,
+                'followingPublications.reactions': 1,
+            }, // Projeter les champs souhaités
+        }
+    ]);
+    return results
+}
