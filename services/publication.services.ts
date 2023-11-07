@@ -208,16 +208,22 @@ export const feed = async (ownId: string): Promise<any> => {
             },
         },
         {
-            $project: {
-                _id: 1,
+            $addFields: {
                 publication: {
                     _id: '$followingPublications._id',
-                    profile: { $arrayElemAt: ['$profileInfo', 0] }, // Obtenez la première occurrence de profilInfo comme profil
+                    profile: {
+                        _id: { $arrayElemAt: ['$profileInfo._id', 0] },
+                        name: { $arrayElemAt: ['$profileInfo.name', 0] },
+                        image: { $arrayElemAt: ['$profileInfo.image', 0] },
+                    },
                     content: '$followingPublications.content',
                     images: '$followingPublications.images',
                     date: '$followingPublications.date',
-                    comments: '$followingPublications.comments',
-                    reactions: '$followingPublications.reactions',
+                    numberOfComments: { $size: '$followingPublications.comments' },
+                    numberOfReactions: { $size: '$followingPublications.reactions' },
+                    isReacted: {
+                        $in: [new Types.ObjectId(ownId), '$followingPublications.reactions'],
+                    },
                 },
             },
         },
@@ -227,5 +233,11 @@ export const feed = async (ownId: string): Promise<any> => {
             },
         },
     ]);
+
+    console.log(results);
+
+
+    console.log(results);
+
     return results
 }
