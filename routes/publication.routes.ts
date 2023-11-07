@@ -12,7 +12,7 @@ PublicationRouter.delete('/:publicationId', authenticateToken, (req, res) => rem
 
 PublicationRouter.get('/comments/:publicationId', (req, res) => getCommentsController(req, res))
 PublicationRouter.post('/comment', authenticateToken, (req, res) => postCommentController(req, res))
-PublicationRouter.delete('/comment', authenticateToken, (req, res) => removeCommentController(req, res))
+PublicationRouter.delete('/comment/:commentId', authenticateToken, (req, res) => removeCommentController(req, res))
 
 PublicationRouter.get('/reactions/:publicationId', (req, res) => getReactionsController(req, res))
 PublicationRouter.post('/reaction/toggle', authenticateToken, (req, res) => toggleReactionController(req, res))
