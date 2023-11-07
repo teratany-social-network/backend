@@ -1,5 +1,5 @@
 {
-    "/profile/{id}": {
+    "/profile/{id}/{ownId}": {
         "get": {
             "tags": [
                 "profile"
@@ -13,7 +13,16 @@
                         "type": "string"
                     },
                     "description": "L'identifiant à rechercher",
-                    "example": "6528f7d0ec2defa28afe1ee4"
+                    "example": "65461616f548bebc8e464dd3"
+                },
+                {
+                    "in": "path",
+                    "name": "ownId",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant du visiteur du profile",
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -244,7 +253,7 @@
                                 "id": {
                                     "type": "string",
                                     "description": "Identifiant du profile",
-                                    "example": "65427cc04553b97e16c74f27"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "name": {
                                     "type": "string",
@@ -325,7 +334,7 @@
                                 "id": {
                                     "type": "string",
                                     "description": "Identifiant de profile",
-                                    "example": "65427cc04553b97e16c74f27"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "address": {
                                     "type": "object",
@@ -405,7 +414,7 @@
                                 "id": {
                                     "type": "string",
                                     "description": "Identifiant du profile",
-                                    "example": "65427cc04553b97e16c74f27"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "phone": {
                                     "type": "string",

@@ -17,7 +17,7 @@ const profileGetMask = {
     isFollowed: 0
 }
 
-export const getProfileById = async (id: string): Promise<IProfile[]> => {
+export const getProfileById = async (id: string, ownId: string): Promise<IProfile[]> => {
     try {
 
         const profile = await ProfileModel.aggregate([
@@ -42,30 +42,14 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                                 id: '$$adminProfile._id',
                                 name: '$$adminProfile.name',
                                 image: '$$adminProfile.image',
-                                numberOfFollowers: { $size: '$followers' },
+                                numberOfFollowers: { $size: '$$adminProfile.followers' },
                             },
                         },
                     },
-
-                },
-            },
-            {
-                $addFields: {
-                    admins: {
-                        $map: {
-                            input: '$admins',
-                            as: 'adminProfile',
-                            in: {
-                                name: '$$adminProfile.name',
-                                image: '$$adminProfile.image',
-                                numberOfFollowers: { $size: '$followers' },
-                            },
-                        },
-                    },
-
                     isFollowed: {
-                        $in: [new Types.ObjectId(id), '$followers']
+                        $in: [new Types.ObjectId(ownId), '$followers']
                     },
+
                 },
             },
 
@@ -76,6 +60,7 @@ export const getProfileById = async (id: string): Promise<IProfile[]> => {
                     confirmation: 0,
                     notifications: 0,
                     reaction: 0,
+                    __v: 0
                 },
             },
         ]);

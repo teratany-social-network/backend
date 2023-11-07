@@ -9,7 +9,7 @@ ProfileRouter.get('/email', (req, res) => getProfileByEmailController(req, res))
 ProfileRouter.get('/byToken', authenticateToken, (req, res) => getProfileByTokenController(req, res))
 ProfileRouter.get('/withCoordonates', (req, res) => getProfileWithCoordonatesController(req, res))
 ProfileRouter.get('/password/recovery', (req, res) => sendRecoveryCodeController(req, res))
-ProfileRouter.get('/:id', (req, res) => getProfileByIdController(req, res))
+ProfileRouter.get('/:id/:ownId', (req, res) => getProfileByIdController(req, res))
 
 ProfileRouter.post('/follow', (req, res) => toggleFollowController(req, res))
 

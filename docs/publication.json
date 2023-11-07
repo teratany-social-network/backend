@@ -15,7 +15,7 @@
                                 "profile": {
                                     "type": "string",
                                     "description": "Identifiant du profil qui publie",
-                                    "example": "654338524978a11a1729ca1d"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "content": {
                                     "type": "string",
@@ -56,7 +56,7 @@
                                 "publicationId": {
                                     "type": "string",
                                     "description": "Identifiant de la publication",
-                                    "example": "65440653989e8cc936bfea26"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "content": {
                                     "type": "string",
@@ -89,7 +89,7 @@
                         "type": "string"
                     },
                     "description": "Identifiant du profil dont on get les publications",
-                    "example": "65427cc04553b97e16c74f27"
+                    "example": "65461616f548bebc8e464dd3"
                 },
                 {
                     "in": "query",
@@ -98,7 +98,7 @@
                         "type": "string"
                     },
                     "description": "Identifiant du profil qui get (principalement utilisé pour verifier le status de reaction du profile)",
-                    "example": "65427cc04553b97e16c74f27"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -122,7 +122,7 @@
                         "type": "string"
                     },
                     "description": "Identifiant de la publication publications",
-                    "example": "65440653989e8cc936bfea26"
+                    "example": "65461616f548bebc8e464dd3"
                 },
                 {
                     "in": "query",
@@ -131,7 +131,7 @@
                         "type": "string"
                     },
                     "description": "Identifiant du profil qui get (principalement utilisé pour verifier le status de reaction du profile)",
-                    "example": "65427cc04553b97e16c74f27"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -157,12 +157,12 @@
                                 "profileId": {
                                     "type": "string",
                                     "description": "Identifiant du profil qui publie",
-                                    "example": "65427cc04553b97e16c74f27"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "publicationId": {
                                     "type": "string",
                                     "description": "Identifiant de la publication",
-                                    "example": "65440653989e8cc936bfea26"
+                                    "example": "65461616f548bebc8e464dd3"
                                 }
                             }
                         }
@@ -190,7 +190,7 @@
                         "type": "string"
                     },
                     "description": "L'identifiant à de la publication",
-                    "example": "6544065d989e8cc936bfea2a"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -216,7 +216,7 @@
                                 "profileId": {
                                     "type": "string",
                                     "description": "Identifiant du profil qui commente",
-                                    "example": "654338524978a11a1729ca1d"
+                                    "example": "65461616f548bebc8e464dd3"
                                 },
                                 "content": {
                                     "type": "string",
@@ -226,7 +226,7 @@
                                 "publicationId": {
                                     "type": "string",
                                     "description": "Identifiant de la publication a commenter",
-                                    "example": "654338524978a11a1729ca1d"
+                                    "example": "65461616f548bebc8e464dd3"
                                 }
                             }
                         }
@@ -255,7 +255,7 @@
                         "type": "string"
                     },
                     "description": "L'identifiant du commentaire",
-                    "example": "6544065d989e8cc936bfea2a"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -277,7 +277,7 @@
                         "type": "string"
                     },
                     "description": "L'identifiant de la publication",
-                    "example": "6544065d989e8cc936bfea2a"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -301,7 +301,7 @@
                         "type": "string"
                     },
                     "description": "L'identifiant de la publication",
-                    "example": "6544065d989e8cc936bfea2a"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {
@@ -325,7 +325,7 @@
                         "type": "string"
                     },
                     "description": "L'identifiant du profil actif",
-                    "example": "6544065d989e8cc936bfea2a"
+                    "example": "65461616f548bebc8e464dd3"
                 }
             ],
             "responses": {

@@ -7,8 +7,8 @@ import { IProfile } from "../models/profile.model"
 import { IContact, ICreateProfile, ILocalisation } from "../types/profile"
 
 export const getProfileByIdController = async (req: Request, res: Response) => {
-    const { id } = req.params
-    await getProfileById(id?.toString() || "")
+    const { id, ownId } = req.params
+    await getProfileById(id?.toString() || "", ownId?.toString() || "")
         .then((profile: IProfile[]) => res.send(profile))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
