@@ -169,8 +169,6 @@ export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
 }
 
 export const search = async (filter: String, ownId: string): Promise<any> => {
-    console.log(filter);
-
     const profiles = await ProfileModel.aggregate([
         { $match: { name: { $regex: filter, $options: "i" } } },
         {
