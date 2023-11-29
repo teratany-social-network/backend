@@ -17,7 +17,7 @@ import { PublicationRouter } from "./routes/publication.routes"
 
 dotenv.config()
 const app = express()
-const PORT = process.env.PORT || 9999
+const PORT = process.env.PORT || 9900
 
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/teratany"
 mongoose.set("strictQuery", false).connect(MONGO_URL).then(() => console.log("🥭  Database   : " + MONGO_URL)).catch(() => "MongoDB connection Error")
@@ -43,12 +43,12 @@ app.use(statusMonitor({
         protocol: 'http',
         host: 'localhost',
         path: '/profile/',
-        port: '8080'
+        port: PORT
     }, {
         protocol: 'http',
         host: 'localhost',
         path: '/public/blank',
-        port: '8080'
+        port: PORT
     }]
 }))
 app.use(bodyParser.json())
