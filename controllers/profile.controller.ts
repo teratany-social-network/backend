@@ -2,7 +2,7 @@ import { decodeAuthorization } from "../utils/jwtDecode"
 import { TSendEmail } from "../types/TAuthentication"
 import { ErrorHandler } from "../utils/error"
 import { Request, Response } from "express"
-import { createProfile, editCategories, editContact, editLocalisation, editPassword, editProfileGeneral, editProfileImage, getProfileByEmail, getProfileById, getProfileByName, getProfileByToken, getProfileWithCoordonates, passwordRecovery, search, sendRecoveryCode, toggleFollow } from "../services/profile.services"
+import { createProfile, editCategories, editContact, editLocalisation, editPassword, editProfileGeneral, editProfileImage, getFollowingList, getProfileByEmail, getProfileById, getProfileByName, getProfileByToken, getProfileWithCoordonates, passwordRecovery, search, sendRecoveryCode, toggleFollow } from "../services/profile.services"
 import { IProfile } from "../models/profile.model"
 import { IContact, ICreateProfile, ILocalisation } from "../types/profile"
 
@@ -108,5 +108,12 @@ export const toggleFollowController = async (req: Request, res: Response) => {
     let { currentProfileId, toFollowId } = req.body
     toggleFollow(currentProfileId, toFollowId)
         .then(() => res.send('ok'))
+        .catch((error: ErrorHandler) => res.status(error.code).send(error))
+}
+
+export const getFollowingListController = async (req: Request, res: Response) => {
+    let { id } = req.params
+    getFollowingList(id)
+        .then((followingList) => res.send(followingList))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }

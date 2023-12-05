@@ -32,6 +32,30 @@
             }
         }
     },
+    "/profile/follow/list/{id}": {
+        "get": {
+            "tags": [
+                "profile"
+            ],
+            "summary": "Get la liste des profils followé par un autre profil graçe à son identifiant",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant du profil",
+                    "example": "65461616f548bebc8e464dd3"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "La liste des profils followé"
+                }
+            }
+        }
+    },
     "/profile": {
         "get": {
             "tags": [
