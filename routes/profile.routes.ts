@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { authenticateToken } from "../middleware/authentificationToken"
-import { editLocalisationController, searchController, editPasswordController, editProfileImageController, getProfileByEmailController, getProfileByIdController, getProfileByNameController, getProfileByTokenController, getProfileWithCoordonatesController, passwordRecoveryController, sendRecoveryCodeController, editProfileGeneralController, editCategoriesController, editContactController, createProfileController, toggleFollowController } from "../controllers/profile.controller"
+import { editLocalisationController, searchController, editPasswordController, editProfileImageController, getProfileByEmailController, getProfileByIdController, getProfileByNameController, getProfileByTokenController, getProfileWithCoordonatesController, passwordRecoveryController, sendRecoveryCodeController, editProfileGeneralController, editCategoriesController, editContactController, createProfileController, toggleFollowController, getFollowingListController } from "../controllers/profile.controller"
 
 const ProfileRouter = Router()
 ProfileRouter.get('/', (req, res) => searchController(req, res))
@@ -11,6 +11,7 @@ ProfileRouter.get('/withCoordonates', (req, res) => getProfileWithCoordonatesCon
 ProfileRouter.get('/password/recovery', (req, res) => sendRecoveryCodeController(req, res))
 ProfileRouter.get('/:id/:ownId', (req, res) => getProfileByIdController(req, res))
 
+ProfileRouter.get('/follow/list/:id', (req, res) => getFollowingListController(req, res))
 ProfileRouter.post('/follow', (req, res) => toggleFollowController(req, res))
 
 ProfileRouter.patch('/password/recovery', (req, res) => passwordRecoveryController(req, res))

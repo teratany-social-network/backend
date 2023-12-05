@@ -316,3 +316,18 @@ export const toggleFollow = async (currentProfileId: string, toFollowId: string)
         await toFollow.save()
     } else throw new ErrorHandler(`Vous essayez de suivre un profile qui n'existe pas`, 404, new Error)
 }
+
+
+export const getFollowingList = async (id: string) => {
+    try {
+      const profile = await ProfileModel.findById(id)
+      .populate({
+        path: 'following',
+        select: 'name image profileType'
+      })
+      if(profile) return profile.following || []
+      else throw new ErrorHandler('Cet utilisateur n\'existe pas', 404, new Error)
+    } catch (error) {
+      throw new ErrorHandler('Impossible d\'avoir la liste des profiles suivi',500,error);
+    }
+  };
