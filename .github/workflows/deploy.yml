@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Executing remote command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script:  |
+          cd /teratany-app/backend
+          git pull
+          pm2 restart teratany
