@@ -1,0 +1,94 @@
+{
+    "/historique/add": {
+        "post": {
+            "tags": [
+                "historiques"
+            ],
+            "summary": "Ajouter dans historique",
+            "description": "Si l'élément a rajouter n'est qu'un texte simple alors il faut remplir uniquement les champs requis, sinon si c'est directement un profil alors il faudra rajouter le nom du profil, sa photo de profil ainsi que son identifiant",
+            "requestBody": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "owner": {
+                                    "type": "string",
+                                    "description": "Identifiant du profil qui recherche (requis)",
+                                    "example": "65461616f548bebc8e464dd3"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "Le titre de la recherche (requis) si c'est un profil qui va être ajouter alors mettez le nom du profil",
+                                    "example": "Jon Doe"
+                                },
+                                "profileId": {
+                                    "type": "string",
+                                    "description": "Identifiant du profil à ajouter",
+                                    "example": "65461616f548bebc8e464dd3"
+                                },
+                                "pictureUrl": {
+                                    "type": "string",
+                                    "description": "PDP du profil à rajouter dans historique",
+                                    "example": "https://api.teratany/public/myImage.jpg"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    },
+    "/historique/{id}": {
+        "delete": {
+            "tags": [
+                "historiques"
+            ],
+            "summary": "Supprimer un élément de l'historique",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant de l'élément",
+                    "example": "65461616f548bebc8e464dd3"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        },
+        "get": {
+            "tags": [
+                "historiques"
+            ],
+            "summary": "Voir l'historique du profil",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "L'identifiant du profil",
+                    "example": "65461616f548bebc8e464dd3"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "ok"
+                }
+            }
+        }
+    }
+}

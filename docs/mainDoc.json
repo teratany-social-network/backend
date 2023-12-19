@@ -19,6 +19,9 @@
         },
         {
             "name": "reactions"
+        },
+        {
+            "name": "historiques"
         }
     ],
     "openapi": "3.0.0",
