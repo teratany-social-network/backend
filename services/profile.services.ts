@@ -169,6 +169,8 @@ export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
 }
 
 export const search = async (filter: String, ownId: string): Promise<any> => {
+    console.log(filter);
+    
     const profiles = await ProfileModel.aggregate([
         { $match: { name: { $regex: filter, $options: "i" } } },
         {
@@ -194,9 +196,6 @@ export const search = async (filter: String, ownId: string): Promise<any> => {
 
     const publications = await PublicationModel.aggregate([
         {
-            $match: { content: { $regex: filter, $options: "i" } }
-        },
-        {
             $lookup: {
                 from: 'profiles',
                 localField: 'profile',
@@ -206,6 +205,14 @@ export const search = async (filter: String, ownId: string): Promise<any> => {
         },
         {
             $unwind: '$profile'
+        },
+        {
+            $match: { 
+                $or: [
+                    { content: { $regex: filter, $options: "i" } },
+                    { 'profile.name': { $regex: filter, $options: "i" } }
+                ]
+            }
         },
         {
             $addFields: {
