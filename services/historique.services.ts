@@ -1,7 +1,8 @@
 import { HistoriqueModel, IHistorique } from "../models/historique.model"
 import { ErrorHandler } from "../utils/error"
 
-export const addTextToHistoriques = async (historique: IHistorique) => {
+export const addToHistory = async (historique: IHistorique) => {
+    await HistoriqueModel.findOneAndDelete({text: historique.text})
     await new HistoriqueModel(historique).save()
         .catch((error) => {
             throw new ErrorHandler('Erreur interne lors de l\'ajout de nouveau composant dans l\'historique', 500, error)

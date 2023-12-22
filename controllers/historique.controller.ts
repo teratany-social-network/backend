@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
 import { IHistorique } from "../models/historique.model"
-import { addTextToHistoriques, getHistoriques, removeFromHistoriques } from "../services/historique.services"
+import { addToHistory, getHistoriques, removeFromHistoriques } from "../services/historique.services"
 import { ErrorHandler } from "../utils/error"
 
-export const addTextToHistoriquesController = async (req: Request, res: Response) => {
+export const addToHistoryController = async (req: Request, res: Response) => {
     const historique = req.body as IHistorique
-    addTextToHistoriques(historique)
+    addToHistory(historique)
         .then(() => res.send('ok'))
         .catch((error: ErrorHandler) => res.status(error.code).send(error.description))
 }
