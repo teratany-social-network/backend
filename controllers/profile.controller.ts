@@ -76,8 +76,9 @@ export const sendRecoveryCodeController = async (req: Request, res: Response) =>
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }
 export const searchController = async (req: Request, res: Response) => {
-    const { filter, ownId } = req.query
-    await search(filter?.toString() || '', ownId?.toString() || '')
+    const { filter, ownId, type } = req.query
+
+    await search(filter?.toString() || '', ownId?.toString() || '', type?.toString() || '')
         .then((profiles: any) => res.send(profiles))
         .catch((error: ErrorHandler) => res.status(error.code).send(error))
 }

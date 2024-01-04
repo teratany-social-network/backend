@@ -168,11 +168,10 @@ export const sendRecoveryCode = async (email: string): Promise<TSendEmail> => {
     } else throw new ErrorHandler(`Il n'y a pas d'utilisateur sous le mail ${email}`, 404, new Error(`Il n'y a pas d'utilisateur sous le mail ${email}`))
 }
 
-export const search = async (filter: String, ownId: string): Promise<any> => {
-    console.log(filter);
-    
+export const search = async (filter: String, ownId: string, type: string): Promise<any> => {
+
     const profiles = await ProfileModel.aggregate([
-        { $match: { name: { $regex: filter, $options: "i" } } },
+        { $match: { name: { $regex: filter, $options: "i" }, profileType: { $regex: type, $options: "i" } } },
         {
             $addFields: {
                 isFollowed: {
@@ -207,7 +206,7 @@ export const search = async (filter: String, ownId: string): Promise<any> => {
             $unwind: '$profile'
         },
         {
-            $match: { 
+            $match: {
                 $or: [
                     { content: { $regex: filter, $options: "i" } },
                     { 'profile.name': { $regex: filter, $options: "i" } }
@@ -327,14 +326,14 @@ export const toggleFollow = async (currentProfileId: string, toFollowId: string)
 
 export const getFollowingList = async (id: string) => {
     try {
-      const profile = await ProfileModel.findById(id)
-      .populate({
-        path: 'following',
-        select: 'name image profileType'
-      })
-      if(profile) return profile.following || []
-      else throw new ErrorHandler('Cet utilisateur n\'existe pas', 404, new Error)
+        const profile = await ProfileModel.findById(id)
+            .populate({
+                path: 'following',
+                select: 'name image profileType'
+            })
+        if (profile) return profile.following || []
+        else throw new ErrorHandler('Cet utilisateur n\'existe pas', 404, new Error)
     } catch (error) {
-      throw new ErrorHandler('Impossible d\'avoir la liste des profiles suivi',500,error);
+        throw new ErrorHandler('Impossible d\'avoir la liste des profiles suivi', 500, error);
     }
-  };
+};
